@@ -1,0 +1,18 @@
+{
+  "name": "threejs-2",
+  "version": "1.0.0",
+  "description": "Animation for CBG Studio",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html --dist-dir ./build"
+  },
+  "keywords": ["Threejs", "Canvas", "Animations", "Web Design"],
+  "author": "Antonio Guiotto",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel": "^2.11.0"
+  },
+  "dependencies": {
+    "three": "^0.161.0"
+  }
+}

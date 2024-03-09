@@ -1,0 +1,50 @@
+body {
+  margin: 0;
+  overflow: hidden;
+}
+
+#overlay {
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #000; /* Adjust based on your color scheme */
+  font-family: 'Albert Sans', sans-serif; /* Ensure the font is loaded */
+}
+
+.category_content {
+  font-family: 'Albert Sans', sans-serif; /* Ensure the font is loaded */
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  max-width: 800px;
+  width: 100%;
+  height: 70%;
+  transform: translateY(100%) translateX(-50%);
+  transition: transform 0.2s ease-in-out;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.category_content iframe {
+  width: 600px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.category_content.show {
+  transform: translateY(0%) translateX(-50%);
+}

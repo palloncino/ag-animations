@@ -1,0 +1,258 @@
+@font-face {
+  font-family: 'Custom';
+  src: url('./assets/fonts/MartianMono.ttf');
+}
+
+@font-face {
+  font-family: 'Custom-2';
+  src: url('./assets/fonts/Poppins-SemiBold.ttf');
+}
+
+/* Basic Reset */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  font-family: 'Custom', sans-serif;
+  font-weight: 300;
+  font-size: 12px;
+}
+
+#hero-header {
+  transition: clip-path 0.5s ease-out;
+}
+
+/* Hero Header Styling */
+.hero-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  z-index: 10;
+  transform-origin: center center;
+  /* Centralize the scaling effect */
+}
+
+/* Unified styling for all images within hero-header for better maintenance */
+.hero-header img {
+  bottom: 0;
+  left: 50%;
+  width: 100%;
+  height: 100vh;
+  transform: translateX(-50%);
+  object-fit: cover;
+  /* Ensures images cover the area fully */
+  position: absolute;
+}
+
+/* Specific z-index layering for background and foreground */
+.background-sky {
+  z-index: -1;
+}
+
+.foreground-factory {
+  z-index: 5;
+}
+
+.animated-heading {
+  font-family: Custom-2;
+  text-shadow: 
+    -10px -10px 0 #00000050,  
+    10px -10px 0 #00000050,
+    -10px 10px 0 #00000050,
+    10px 10px 0 #00000050; /* Add #00000050 shadow in all directions to create an outline effect */
+  color: #fff;
+  position: absolute;
+  transform-origin: center bottom;
+  font-weight: 300;
+  letter-spacing: -0.13em;
+  z-index: 2;
+  top: 15%;
+  width: 100%;
+  text-align: center;
+  animation: raiseFromGround 1s ease-out;
+  animation-iteration-count: 1;
+  margin: 0;
+  font-size: clamp(60px, 23vw, 600px);
+}
+
+.animated-heading.desktop {
+  display: block;
+}
+
+.animated-heading.mobile {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .animated-heading.mobile {
+    display: unset;
+  }
+
+  .animated-heading.desktop {
+    display: none;
+  }
+}
+
+@media (min-width: 1200px) {
+  .animated-heading {
+    top: 12%;
+  }
+}
+
+@media (min-width: 1300px) {
+  .animated-heading {
+    top: 8%;
+  }
+}
+
+@media (min-width: 1400px) {
+  .animated-heading {
+    top: 4%;
+  }
+}
+
+@media (min-width: 1500px) {
+  .animated-heading {
+    top: 14%;
+  }
+}
+
+@media (min-width: 1600px) {
+  .animated-heading {
+    top: 11%;
+  }
+}
+
+@media (min-width: 1700px) {
+  .animated-heading {
+    top: 8%;
+  }
+}
+
+/* Keyframe Animation */
+@keyframes raiseFromGround {
+  from {
+    transform: translateY(100%) translateX(0%);
+  }
+
+  to {
+    transform: translateY(0%) translateX(0%);
+  }
+}
+
+
+
+/* 
+| Other html code
+*/
+header,
+header div {
+  align-items: center;
+  display: flex;
+  flex: 1;
+}
+
+header {
+  box-sizing: border-box;
+  position: absolute;
+  width: 100%;
+  justify-content: space-between;
+  height: 50px;
+  padding: 25px 30px 15px;
+  background: #fff
+}
+
+header div {
+  justify-content: center
+}
+
+.content-section {
+  letter-spacing: 0;
+  line-height: 1.55em;
+  font-weight: 300;
+  font-size: 12px
+}
+
+.text-container {
+  text-align: center;
+  height: auto;
+  width: 512px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.text-container ul {
+  padding: 0;
+  list-style: none;
+  text-align: center;
+}
+
+.content-1,
+.content-2 {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center
+}
+
+.content-2 .card {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  max-width: 512px;
+  margin: auto;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.content-2 .card .text {
+  text-align: left;
+  padding-left: 2rem;
+}
+
+.content-2 .card img {
+}
+
+
+.Scroll_to_discover {
+  height: 24px;
+  overflow: hidden;
+  width: 200px
+}
+
+.Scroll_to_discover span {
+  z-index: 99
+}
+
+@keyframes test {
+
+  0%,
+  100% {
+    transform: translateY(0)
+  }
+
+  33% {
+    transform: translateY(-200%)
+  }
+
+  34% {
+    opacity: 0
+  }
+
+  35% {
+    opacity: 1
+  }
+
+  36% {
+    transform: translateY(200%)
+  }
+}

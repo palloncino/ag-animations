@@ -1,0 +1,126 @@
+@font-face {
+  font-family: 'Custom';
+  src: url('./assets/fonts/MartianMono.ttf');
+}
+
+/* Basic Reset */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  font-family: 'Custom', sans-serif;
+  font-weight: 300;
+  font-size: 12px;
+}
+
+#hero-header {
+  transition: clip-path 0.5s ease-out;
+}
+
+/* Hero Header Styling */
+.hero-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  z-index: 10;
+  transform-origin: center center;
+  /* Centralize the scaling effect */
+}
+
+/* Unified styling for all images within hero-header for better maintenance */
+.hero-header img {
+  bottom: 0;
+  left: 50%;
+  width: 100%;
+  height: 100vh;
+  transform: translateX(-50%);
+  object-fit: cover;
+  /* Ensures images cover the area fully */
+  position: absolute;
+}
+
+/* Specific z-index layering for background and foreground */
+.background-sky {
+  z-index: -1;
+}
+
+.foreground-factory {
+  z-index: 5;
+}
+
+.animated-heading {
+  position: absolute;
+  transform-origin: center bottom;
+  font-family: Custom;
+  font-weight: 300;
+  letter-spacing: -0.13em;
+  z-index: 2;
+  top: 20%;
+  width: 100%;
+  text-align: center;
+  animation: raiseFromGround 1s ease-out;
+  animation-iteration-count: 1;
+  margin: 0;
+  left: -3%;
+  font-size: clamp(60px, 29vw, 600px);
+}
+
+.animated-heading.desktop { display: block; }
+.animated-heading.mobile { display: none; }
+
+@media (max-width: 600px) {
+  .animated-heading.mobile {
+    display: unset;
+  }
+  .animated-heading.desktop {
+    display: none;
+  }
+}
+
+@media (min-width: 1400px) {
+  .animated-heading {
+    top: 17%;
+  }
+}
+
+@media (min-width: 1500px) {
+  .animated-heading {
+    top: 14%;
+  }
+}
+
+@media (min-width: 1600px) {
+  .animated-heading {
+    top: 11%;
+  }
+}
+
+@media (min-width: 1700px) {
+  .animated-heading {
+    top: 8%;
+  }
+}
+
+/* Keyframe Animation */
+@keyframes raiseFromGround {
+  from {
+    transform: translateY(100%) translateX(0%);
+  }
+
+  to {
+    transform: translateY(0%) translateX(0%);
+  }
+}
+
+
+
+/* 
+| Other html code
+*/
+header,header div{align-items:center;display:flex;flex:1;}header{box-sizing:border-box;position:absolute;width:100%;justify-content:space-between;height:50px;padding:25px 30px 15px;background:#fff}header div{justify-content:center}.content-section{letter-spacing:0;line-height:1.55em;font-weight:300;font-size:12px}.text-container{text-align:center;height:auto;width:512px}.content-1,.content-2{height:100vh;display:flex;align-items:center;justify-content:center}.content-2 .text-container{text-align:center;max-width:512px;margin:auto;padding:20px;background-color:#f5f5f5;border-radius:8px;box-shadow:0 4px 6px rgba(0,0,0,.1)}.content-2 .text-container h2{color:#333;font-size:24px;margin-bottom:20px;line-height:36px}.content-2 .text-container img{width:100%;height:auto;margin:20px 0;border-radius:4px}.content-2 .text-container p{color:#666;line-height:1.6;margin-bottom:15px}.Scroll_to_discover{height:24px;overflow:hidden;width:200px}.Scroll_to_discover span{z-index:99}@keyframes test{0%,100%{transform:translateY(0)}33%{transform:translateY(-200%)}34%{opacity:0}35%{opacity:1}36%{transform:translateY(200%)}}

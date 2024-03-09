@@ -1,0 +1,26 @@
+{
+  "name": "threejs-6",
+  "version": "1.0.0",
+  "description": "Animation for A. Guiotto Website",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html --dist-dir ./build"
+  },
+  "keywords": [
+    "Threejs",
+    "Canvas",
+    "Animations",
+    "Web Design"
+  ],
+  "author": "Antonio Guiotto",
+  "license": "ISC",
+  "devDependencies": {
+    "@parcel/transformer-raw": "^2.12.0",
+    "parcel": "^2.11.0",
+    "parcel-plugin-static-files-copy": "^2.6.0",
+    "parcel-reporter-static-files-copy": "^1.5.3"
+  },
+  "dependencies": {
+    "three": "^0.161.0"
+  }
+}
