@@ -62,10 +62,10 @@ html {
 .animated-heading {
   font-family: Custom-2;
   text-shadow: 
-    -10px -10px 0 #00000050,  
-    10px -10px 0 #00000050,
-    -10px 10px 0 #00000050,
-    10px 10px 0 #00000050; /* Add #00000050 shadow in all directions to create an outline effect */
+    -6px -6px 0 #000000,  
+    6px -6px 0 #000000,
+    -6px 6px 0 #000000,
+    6px 6px 0 #000000;
   color: #fff;
   position: absolute;
   transform-origin: center bottom;
