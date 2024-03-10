@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 BUCKET=animation-slot-03
-APP_PATH=./WEB-3
+APP_PATH=./NODE-2/
 
 echo "Removing all files from bucket $BUCKET"
 aws s3 rm s3://$BUCKET --recursive --profile=a1
