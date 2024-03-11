@@ -101,6 +101,11 @@ html {
 @media (max-width: 600px) {
   .animated-heading.mobile {
     display: unset;
+    text-shadow:
+    -3px -3px 0 #000000,
+    3px -3px 0 #000000,
+    -3px 3px 0 #000000,
+    3px 3px 0 #000000;
   }
 
   .hero-header {
@@ -212,6 +217,13 @@ header div {
   background-repeat: no-repeat;
 }
 
+.menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end
+}
+
 .content-section {
   letter-spacing: 0;
   line-height: 1.55em;
@@ -265,11 +277,12 @@ header div {
 .Scroll_to_discover {
   height: 24px;
   overflow: hidden;
-  width: 200px
+  min-width: 164px;
+  z-index: 80;
 }
 
 .Scroll_to_discover span {
-  z-index: 99
+  z-index: 99;
 }
 
 @keyframes test {

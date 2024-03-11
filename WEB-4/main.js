@@ -15,46 +15,17 @@ function customMobileEffectCBG() {
   adjustViewportHeight();
 
   const heroHeader = document.getElementById("hero-header");
+  heroHeader.style.transition = 'opacity .5s';
+  const scroll_to_discover_span = document.getElementById("Scroll_to_discover_span");
+  const scroll_to_discover_container = document.querySelector(".Scroll_to_discover");
 
-  const tappingHand = document.createElement("img");
-  tappingHand.src = "./assets/images/tap-1.png";
-  tappingHand.id = "tapping-hand";
-  tappingHand.style.transition = 'opacity 2s';
-  tappingHand.style.position = "absolute";
-  tappingHand.style.zIndex = "1000";
-  tappingHand.style.height = "70px";
-  tappingHand.style.width = "50px";
-  tappingHand.style.bottom = "20px";
-  tappingHand.style.left = "50%";
-  tappingHand.style.transform = "translate(-50%, -50%)";
-  document.body.appendChild(tappingHand);
-
-  const tapText = document.createElement("div");
-  tapText.textContent = "tap to continue";
-  tapText.className = "tap-text";
-  tapText.style.transition = 'opacity 2s';
-  tapText.style.position = "absolute";
-  tapText.style.zIndex = "1001";
-  tapText.style.bottom = "140px";
-  tapText.style.left = "50%";
-  tapText.style.transform = "translateX(-50%)";
-  tapText.style.color = "white";
-  tapText.style.fontSize = "16px";
-  tapText.style.fontWeight = "700";
-  document.body.appendChild(tapText);
-
-  let visibilityToggle = true;
-  const intervalID = setInterval(() => {
-    tappingHand.style.opacity = visibilityToggle ? ".8" : "0";
-    tapText.style.opacity = visibilityToggle ? "1" : "0";
-    visibilityToggle = !visibilityToggle;
-  }, 5000);
+  scroll_to_discover_container.style.background = '#000';
+  scroll_to_discover_span.style.color = '#fff';
+  scroll_to_discover_span.textContent = 'Tap to continue';
 
   heroHeader.addEventListener("click", function () {
-    clearInterval(intervalID); // Clear the interval to stop toggling
     heroHeader.style.opacity = "0";
-    tappingHand.style.display = "none";
-    tapText.style.display = "none";
+    scroll_to_discover_container.style.display = 'none';
     setTimeout(() => {
       heroHeader.style.visibility = "hidden";
     }, 500);
