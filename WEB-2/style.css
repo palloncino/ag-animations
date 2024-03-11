@@ -229,7 +229,8 @@ header div {
 .Scroll_to_discover {
   height: 24px;
   overflow: hidden;
-  min-width: 165px;
+  min-width: 164px;
+  max-width: 164px;
 }
 
 .Scroll_to_discover span {
