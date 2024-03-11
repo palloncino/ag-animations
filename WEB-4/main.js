@@ -1,4 +1,26 @@
 document.addEventListener("DOMContentLoaded", function () {
+  if (window.innerWidth <= 600) {
+    customMobileEffectCBG();
+  } else {
+    customDesktopEffectCBG();
+  }
+});
+
+function customMobileEffectCBG() {
+
+  function adjustViewportHeight() {
+    document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+  }
+  
+  window.addEventListener('resize', adjustViewportHeight);
+  adjustViewportHeight()
+
+  const heroHeader = document.getElementById("hero-header");
+
+  // make the hero header disappear when clicked
+}
+
+function customDesktopEffectCBG() {
   const backgroundSky = document.querySelector(".background-sky");
   const foregroundFactory = document.querySelector(".foreground-factory");
   backgroundSky.style.position = "fixed";
@@ -62,4 +84,4 @@ document.addEventListener("DOMContentLoaded", function () {
   const sentinel = document.createElement("div");
   document.body.prepend(sentinel);
   observer.observe(sentinel);
-});
+}
