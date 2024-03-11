@@ -1,4 +1,55 @@
 document.addEventListener("DOMContentLoaded", function () {
+  if (window.innerWidth <= 600) {
+    customMobileEffectCBG()
+  } else {
+    customDesktopEffectCBG()
+  }
+})
+
+function customMobileEffectCBG() {
+  const heroHeader = document.getElementById("hero-header");
+  let isClipped = false; // State to track if the header is currently clipped
+
+  function clipHeroHeader() {
+    if (!isClipped) {
+      heroHeader.style.animation = "clipHeroHeader 1s forwards";
+      isClipped = true;
+      // After the animation, allow the page to scroll
+      document.body.style.overflowY = "auto";
+    }
+  }
+
+  function unclipHeroHeader() {
+    if (isClipped) {
+      heroHeader.style.animation = "unclipHeroHeader 1s forwards";
+      isClipped = false;
+    }
+  }
+
+  window.addEventListener("touchend", function (e) {
+    clipHeroHeader();
+  }, { passive: true });
+
+  // Use IntersectionObserver to observe when the user scrolls back to the top and potentially unclip the hero header
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && isClipped) {
+          // If at the top and header is clipped, unclip
+          unclipHeroHeader();
+        }
+      });
+    },
+    { threshold: [0] }
+  );
+
+  // The sentinel element to observe for detecting when the user scrolls to the top
+  const sentinel = document.createElement("div");
+  document.body.prepend(sentinel);
+  observer.observe(sentinel);
+}
+
+function customDesktopEffectCBG() {
   const backgroundSky = document.querySelector(".background-sky");
   const foregroundFactory = document.querySelector(".foreground-factory");
   backgroundSky.style.position = "fixed";
@@ -62,4 +113,4 @@ document.addEventListener("DOMContentLoaded", function () {
   const sentinel = document.createElement("div");
   document.body.prepend(sentinel);
   observer.observe(sentinel);
-});
+}
