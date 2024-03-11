@@ -89,6 +89,15 @@ html {
   display: none;
 }
 
+@keyframes tapAnimation {
+  0%, 50% {
+    opacity: 1;
+  }
+  50.1%, 100% {
+    opacity: 0;
+  }
+}
+
 @media (max-width: 600px) {
   .animated-heading.mobile {
     display: unset;

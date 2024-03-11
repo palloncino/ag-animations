@@ -7,27 +7,57 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function customMobileEffectCBG() {
-
   function adjustViewportHeight() {
-    document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+    document.documentElement.style.setProperty("--vh", `${window.innerHeight * 0.01}px`);
   }
-  
-  window.addEventListener('resize', adjustViewportHeight);
-  adjustViewportHeight()
+
+  window.addEventListener("resize", adjustViewportHeight);
+  adjustViewportHeight();
 
   const heroHeader = document.getElementById("hero-header");
 
-  // Add transition for opacity change
-  heroHeader.style.transition = 'opacity 0.5s ease-out';
+  const tappingHand = document.createElement("img");
+  tappingHand.src = "./assets/images/tap-1.png";
+  tappingHand.id = "tapping-hand";
+  tappingHand.style.transition = 'opacity 2s';
+  tappingHand.style.position = "absolute";
+  tappingHand.style.zIndex = "1000";
+  tappingHand.style.height = "70px";
+  tappingHand.style.width = "50px";
+  tappingHand.style.bottom = "20px";
+  tappingHand.style.left = "50%";
+  tappingHand.style.transform = "translate(-50%, -50%)";
+  document.body.appendChild(tappingHand);
 
-  // Event listener to make the hero header disappear on click
-  heroHeader.addEventListener("click", function() {
-    // Set opacity to 0 to fade out
-    heroHeader.style.opacity = '0';
-    // Optional: Set a timeout to then hide the element from the screen readers and clicks
+  const tapText = document.createElement("div");
+  tapText.textContent = "tap to continue";
+  tapText.className = "tap-text";
+  tapText.style.transition = 'opacity 2s';
+  tapText.style.position = "absolute";
+  tapText.style.zIndex = "1001";
+  tapText.style.bottom = "140px";
+  tapText.style.left = "50%";
+  tapText.style.transform = "translateX(-50%)";
+  tapText.style.color = "white";
+  tapText.style.fontSize = "16px";
+  tapText.style.fontWeight = "700";
+  document.body.appendChild(tapText);
+
+  let visibilityToggle = true;
+  const intervalID = setInterval(() => {
+    tappingHand.style.opacity = visibilityToggle ? ".8" : "0";
+    tapText.style.opacity = visibilityToggle ? "1" : "0";
+    visibilityToggle = !visibilityToggle;
+  }, 5000);
+
+  heroHeader.addEventListener("click", function () {
+    clearInterval(intervalID); // Clear the interval to stop toggling
+    heroHeader.style.opacity = "0";
+    tappingHand.style.display = "none";
+    tapText.style.display = "none";
     setTimeout(() => {
-      heroHeader.style.visibility = 'hidden';
-    }, 500); // Wait for the transition to complete
+      heroHeader.style.visibility = "hidden";
+    }, 500);
   });
 }
 
