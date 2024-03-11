@@ -17,7 +17,18 @@ function customMobileEffectCBG() {
 
   const heroHeader = document.getElementById("hero-header");
 
-  // make the hero header disappear when clicked
+  // Add transition for opacity change
+  heroHeader.style.transition = 'opacity 0.5s ease-out';
+
+  // Event listener to make the hero header disappear on click
+  heroHeader.addEventListener("click", function() {
+    // Set opacity to 0 to fade out
+    heroHeader.style.opacity = '0';
+    // Optional: Set a timeout to then hide the element from the screen readers and clicks
+    setTimeout(() => {
+      heroHeader.style.visibility = 'hidden';
+    }, 500); // Wait for the transition to complete
+  });
 }
 
 function customDesktopEffectCBG() {
