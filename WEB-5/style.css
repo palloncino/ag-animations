@@ -1,0 +1,32 @@
+@font-face {
+  font-family: 'CustomRegular';
+  src: url('./assets/fonts/Poppins-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'CustomBold';
+  src: url('./assets/fonts/Poppins-SemiBold.ttf');
+}
+
+body {
+  height: 200vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.instructons {
+  font-family: CustomRegular;
+  cursor: default;
+  position: absolute;
+  top: 10%;
+  font-size: 5rem;
+}
+
+#animation-container {
+  width: 500px;
+  height: 500px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+}
