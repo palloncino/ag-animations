@@ -16,6 +16,6 @@ These apps are created with Nodejs and NPM modules you will need to clone and ``
 
 ### WEB-1, WEB-2 etc ... ?
 
-You can simply use a plugin like ```Live Server``` and open the index.html.
+You can simply use a plugin like ```Live Server``` and open the index.html or drag and drop the index.html into a browser window.
 
 > All of the animation are authored by Antonio Guiotto
