@@ -58,7 +58,9 @@ document.addEventListener("DOMContentLoaded", function () {
   // Adjusts canvas size on window resize
   window.addEventListener("resize", setCanvasSize);
 
-  // Handles scroll event to change images
+  const imageCache = {};
+
+  // Handles scroll event to change images, with cache check and preload optimization
   window.addEventListener("scroll", () => {
     let scrollUnits = Math.floor(window.scrollY / SCROLL_PIXELS_PER_CHANGE) + START_IMAGE_NUMBER;
     let imageIndex = scrollUnits % TOTAL_IMAGES;
@@ -67,21 +69,34 @@ document.addEventListener("DOMContentLoaded", function () {
     const imageName = imageIndex.toString().padStart(6, "0") + ".jpg";
     const imagePath = `./downloaded_images/${imageName}`;
 
-    // Preload nearby images for smoother scrolling
+    // Use the cached image if available
+    if (imageCache[imagePath]) {
+      currentImage = imageCache[imagePath];
+      drawImageCoverCanvas(currentImage);
+    } else {
+      let img = new Image();
+      img.onload = () => {
+        drawImageCoverCanvas(img);
+        imageCache[imagePath] = img; // Cache the loaded image
+      };
+      img.src = imagePath;
+    }
+
+    // Preload nearby images with cache check
     const preloadIndices = [imageIndex, imageIndex - 1, imageIndex + 1].filter(
-      (index) => index > 0 && index <= TOTAL_IMAGES
+      index => index > 0 && index <= TOTAL_IMAGES
     );
-    preloadIndices.forEach((index) => {
+    preloadIndices.forEach(index => {
       const preloadImageName = index.toString().padStart(6, "0") + ".jpg";
       const preloadImagePath = `./downloaded_images/${preloadImageName}`;
-      const img = new Image();
-      img.src = preloadImagePath;
+      // Only preload if the image is not already in the cache
+      if (!imageCache[preloadImagePath]) {
+        const img = new Image();
+        img.onload = () => {
+          imageCache[preloadImagePath] = img; // Optionally cache preloaded images
+        };
+        img.src = preloadImagePath;
+      }
     });
-
-    // Load and display the current image
-    if (currentImage.src !== imagePath) {
-      currentImage.onload = () => drawImageCoverCanvas(currentImage);
-      currentImage.src = imagePath;
-    }
   });
 });
