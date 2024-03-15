@@ -8,8 +8,12 @@
   src: url('./assets/fonts/Poppins-SemiBold.ttf');
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
-  height: 200vh;
+  height: 240vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,10 +27,40 @@ body {
   font-size: 5rem;
 }
 
-#animation-container {
-  width: 500px;
-  height: 500px;
-  background-size: cover;
-  background-repeat: no-repeat;
+canvas {
   position: relative;
+}
+
+.canvas-container {
+  width: auto;
+  height: auto;
+  position: relative;
+}
+
+.canvas-container h1 {
+  z-index: 10;
+  position: absolute;
+  color: white;
+  margin: 0;
+  font-family: 'CustomBold';
+  font-size: 6rem;
+  line-height: 6rem;
+  padding: 2rem;
+  text-align: justify;
+}
+
+
+@media only screen and (max-width: 600px) {
+  .canvas-container h1 {
+    padding: 1rem;
+    font-size: 3rem;
+    line-height: 3rem;
+    text-align: justify;
+  }
+  .instructons {
+    padding: 1rem;
+    font-size: 3rem;
+    line-height: 3rem;
+    text-align: justify;
+  }
 }
