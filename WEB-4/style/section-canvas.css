@@ -12,7 +12,7 @@
 }
 
 .content-canvas {
-  height: calc(var(--vh, 1vh) * 75);
+  height: calc(var(--vh, 1vh) * 100);
   /* background: url(./assets/images/monkey.webp); */
   background-position: top right;
   background-size: contain;

@@ -5,7 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./style/main.css" />
     <link rel="stylesheet" href="./style/section-canvas.css" />
-    <title>Document</title>
+    <script type="module">
+      import * as THREE from 'https://unpkg.com/three@0.127.0/build/three.module.js';
+      import { GLTFLoader } from 'https://unpkg.com/three@0.127.0/examples/jsm/loaders/GLTFLoader.js';
+      window.THREE = THREE; // Make THREE globally available
+      window.GLTFLoader = GLTFLoader; // Directly attach GLTFLoader to window
+    </script>
+    
+    <title>Concept</title>
   </head>
   <body>
     <div id="hero-header" class="hero-header">
@@ -39,29 +46,26 @@
       </div>
 
       <div class="content-section content-1">
-        <div class="text-container">
-          <span class="title">Web creator</span>
+        <div class="content-1-inner-container">
+          <div class="text-container">
+            <span class="title">Web creator</span>
 
-          <p>Currently working on stuff. I opened 3 slots online to share ideas with the public.</p>
-          <ul>
-            <li>
-              <a href="http://animation-slot-01.s3-website-us-east-1.amazonaws.com/">
-                Online Slot 1
-              </a>
-            </li>
+            <p>Currently working on stuff. I opened 3 slots online to share ideas with the public.</p>
+            <ul>
+              <li>
+                <a href="http://animation-slot-01.s3-website-us-east-1.amazonaws.com/"> Online Slot 1 </a>
+              </li>
 
-            <li>
-              <a href="http://animation-slot-02.s3-website-us-east-1.amazonaws.com/">
-                Online Slot 2
-              </a>
-            </li>
+              <li>
+                <a href="http://animation-slot-02.s3-website-us-east-1.amazonaws.com/"> Online Slot 2 </a>
+              </li>
 
-            <li>
-              <a href="http://animation-slot-03.s3-website-us-east-1.amazonaws.com/">
-                Online Slot 3
-              </a>
-            </li>
-          </ul>
+              <li>
+                <a href="http://animation-slot-03.s3-website-us-east-1.amazonaws.com/"> Online Slot 3 </a>
+              </li>
+            </ul>
+          </div>
+          <div class="glb-model-container"></div>
         </div>
         <!-- <img class="animal-absolute" src="./assets/images/elephant.png" alt="" /> -->
       </div>
@@ -95,5 +99,6 @@
     <script src="./addons.js"></script>
     <script src="./main.js"></script>
     <script src="./canvas.js"></script>
+    <script type="module" src="./3d-robot.js"></script>
   </body>
 </html>
