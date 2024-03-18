@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Apply transform to the h1 element
     const h1Element = document.getElementById("canvas-container-h1");
-    h1Element.style.transform = `translate(${translateX}%, 20%)`;
+    h1Element.style.transform = `translate(${translateX}%, 40%)`;
 
     const imageName = imageIndex.toString() + ".jpg";
     const imagePath = `./canvas-bg-images/${imageName}`;

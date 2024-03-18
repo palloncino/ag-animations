@@ -69,11 +69,11 @@ html {
 
 .animated-heading {
   font-family: Custom-2;
-  /* text-shadow:
-    -6px -6px 0 #000000,
-    6px -6px 0 #000000,
-    -6px 6px 0 #000000,
-    6px 6px 0 #000000; */
+  text-shadow:
+    -4px -4px 0 #000000,
+    4px -4px 0 #000000,
+    -4px 4px 0 #000000,
+    4px 4px 0 #000000;
   color: #fff;
   position: absolute;
   transform-origin: center bottom;
@@ -191,7 +191,6 @@ header div {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-top: 40px solid white;
 }
 
 .content-2 .card {
