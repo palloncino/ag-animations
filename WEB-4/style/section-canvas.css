@@ -27,6 +27,7 @@
 canvas {
   transition: background .5s;
   position: relative;
+  display:block;
 }
 
 .canvas-container .canvas-container-h1 {

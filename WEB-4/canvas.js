@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const progress = Math.min(manualScrollY / maxScroll, 1);
 
     // Calculate translateY value for the animation
-    const translateX = -80 + (150 * progress);
+    const translateX = -100 + (175 * progress);
 
     // Apply transform to the h1 element
     const h1Element = document.getElementById("canvas-container-h1");

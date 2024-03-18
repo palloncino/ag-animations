@@ -190,7 +190,8 @@ header div {
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: center
+  justify-content: center;
+  border-top: 40px solid white;
 }
 
 .content-2 .card {
