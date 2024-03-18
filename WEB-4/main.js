@@ -101,8 +101,8 @@ function customDesktopEffectCBG() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        // document.body.style.overflowY = "auto"; // Re-enable scrolling
-        // window.addEventListener("wheel", onWheel, { passive: false });
+        document.body.style.overflowY = "auto"; // Re-enable scrolling
+        window.addEventListener("wheel", onWheel, { passive: false });
       }
     });
   });

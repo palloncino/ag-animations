@@ -27,7 +27,7 @@
 canvas {
   transition: background .5s;
   position: relative;
-  display:block;
+  display: block;
 }
 
 .canvas-container .canvas-container-h1 {
@@ -59,16 +59,21 @@ canvas {
 
 
 @media only screen and (max-width: 600px) {
-  .canvas-container h1 {
-    padding: 1rem;
-    font-size: 3rem;
-    line-height: 3rem;
-    text-align: justify;
+  .canvas-container .canvas-container-h1 {
+    font-size: 6rem;
+    line-height: 6rem;
+    background: black;
   }
-  .instructons {
-    padding: 1rem;
-    font-size: 3rem;
-    line-height: 3rem;
-    text-align: justify;
+
+  .content-2 .card {
+    align-items: center;
+    max-width: 100%;
+    gap: 0;
   }
+
+  .content-2 .card .text {
+    padding: 1rem;
+    font-size: 1.6rem;
+    line-height: 2.6rem;
+}
 }
