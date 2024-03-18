@@ -95,7 +95,6 @@ function customDesktopEffectCBG() {
       scroll_to_discover_container.style.background = 'transparent';
       scroll_to_discover_span.style.color = 'unset';
       ignoreNextScrollEvent = true;
-      console.log(1)
     } else {
       document.body.style.overflowY = "hidden";
     }
