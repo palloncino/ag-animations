@@ -32,6 +32,8 @@ function customMobileEffectCBG() {
   });
 }
 
+let ignoreNextScrollEvent = false;
+
 function customDesktopEffectCBG() {
   const backgroundSky = document.querySelector(".background-sky");
   const foregroundFactory = document.querySelector(".foreground-factory");
@@ -57,6 +59,12 @@ function customDesktopEffectCBG() {
   heroHeader.style.clipPath = "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)";
 
   function updateHeroHeader(scrollDelta) {
+    if (ignoreNextScrollEvent) {
+      // If the flag is set, ignore this event and reset the flag for next events
+      ignoreNextScrollEvent = false;
+      return;
+    }
+
     effectiveScrollY += scrollDelta;
     effectiveScrollY = Math.max(0, Math.min(effectiveScrollY, maxScroll));
     let progress = effectiveScrollY / maxScroll;
@@ -86,6 +94,8 @@ function customDesktopEffectCBG() {
       window.removeEventListener("wheel", onWheel);
       scroll_to_discover_container.style.background = 'transparent';
       scroll_to_discover_span.style.color = 'unset';
+      ignoreNextScrollEvent = true;
+      console.log(1)
     } else {
       document.body.style.overflowY = "hidden";
     }
