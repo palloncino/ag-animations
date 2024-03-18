@@ -2,9 +2,10 @@ document.addEventListener("DOMContentLoaded", function () {
   // Canvas setup
   const canvas = document.getElementById("animation-canvas");
   const ctx = canvas.getContext("2d");
+  const contentCanvasElement = document.querySelector('.content-canvas');
 
   // Configuration variables
-  const START_IMAGE_NUMBER = 100; // Starting image index
+  const START_IMAGE_NUMBER = 0; // Starting image index
   const TOTAL_IMAGES = 430; // Total number of available images
   const CANVAS_MAX_WIDTH = 800; // Max canvas width
   const CANVAS_MAX_HEIGHT = 500; // Max canvas height, maintaining 8:5 aspect ratio
@@ -12,19 +13,71 @@ document.addEventListener("DOMContentLoaded", function () {
   const MARGIN = 32; // Total margin size (16px per side)
   const SCROLL_PIXELS_PER_CHANGE = 10; // Number of pixels scrolled before changing image
 
+  let canvasInView = false; // Tracks whether .content-canvas is in view
+
+  // Intersection Observer callback
+  const observerCallback = (entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        canvasInView = true; // .content-canvas is in view
+      } else {
+        canvasInView = false; // .content-canvas has left the view
+      }
+    });
+  };
+
+  // Create an observer
+  const observerOptions = {
+    root: null, // observing the viewport
+    threshold: 0.1 // callback is executed when 10% of the target is visible
+  };
+
+  const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+  // Assuming there is an element with the class .content-canvas in your DOM
+  if (contentCanvasElement) {
+    observer.observe(contentCanvasElement); // Start observing
+  }
+
   // Initial canvas size adjustment
   setCanvasSize();
 
-  // Adjusts canvas size on window resize
-  window.addEventListener("resize", setCanvasSize);
+  // Update canvas size and position
+  function updateCanvasSizeAndPosition() {
+    const rect = contentCanvasElement.getBoundingClientRect();
+    // Set canvas dimensions to match the target element
+    canvas.width = rect.width;
+    canvas.height = rect.height;
+    // Position canvas to cover the target element
+    canvas.style.position = 'absolute';
+    canvas.style.top = `0`;
+    canvas.style.left = `${rect.left}px`;
+  }
+
+  // Initial canvas size and position adjustment
+  updateCanvasSizeAndPosition();
+
+  // Adjust canvas size and position on window resize
+  window.addEventListener("resize", updateCanvasSizeAndPosition);
 
   let currentImage = new Image();
 
   const imageCache = {};
 
+  let manualScrollY = 0; // Initialize a manual scroll position
+
   // Handles scroll event to change images, with cache check and preload optimization
-  window.addEventListener("scroll", () => {
-    let scrollUnits = Math.floor(window.scrollY / SCROLL_PIXELS_PER_CHANGE) + START_IMAGE_NUMBER;
+  window.addEventListener("wheel", () => {
+    if (!canvasInView) {
+      // If .content-canvas is not in view, exit the function
+      return;
+    }
+    // Adjust the manual scroll position based on the wheel delta
+    manualScrollY += event.deltaY;
+    // Ensure manualScrollY does not go below 0
+    manualScrollY = Math.max(manualScrollY, 0);
+
+    let scrollUnits = Math.floor(manualScrollY / SCROLL_PIXELS_PER_CHANGE) + START_IMAGE_NUMBER;
     let imageIndex = scrollUnits % TOTAL_IMAGES;
     imageIndex = Math.max(imageIndex, 1); // Ensure image index is within bounds
 
@@ -48,10 +101,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const preloadIndices = [imageIndex, imageIndex - 1, imageIndex + 1].filter(
       (index) => index > 0 && index <= TOTAL_IMAGES
     );
-    
+
     preloadIndices.forEach((index) => {
       const preloadImageName = index.toString().padStart(6, "0") + ".jpg";
-      const preloadImagePath = `./downloaded_images/${preloadImageName}`;
+      const preloadImagePath = `./canvas-bg-images/${preloadImageName}`;
       // Only preload if the image is not already in the cache
       if (!imageCache[preloadImagePath]) {
         const img = new Image();

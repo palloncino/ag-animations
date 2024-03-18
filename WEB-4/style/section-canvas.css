@@ -11,3 +11,37 @@
   justify-content: center
 }
 
+canvas {
+  position: relative;
+}
+
+.canvas-container {
+}
+
+.canvas-container h1 {
+  z-index: 10;
+  position: absolute;
+  color: white;
+  margin: 0;
+  font-family: 'CustomBold';
+  font-size: 6rem;
+  line-height: 6rem;
+  padding: 2rem;
+  text-align: justify;
+}
+
+
+@media only screen and (max-width: 600px) {
+  .canvas-container h1 {
+    padding: 1rem;
+    font-size: 3rem;
+    line-height: 3rem;
+    text-align: justify;
+  }
+  .instructons {
+    padding: 1rem;
+    font-size: 3rem;
+    line-height: 3rem;
+    text-align: justify;
+  }
+}
