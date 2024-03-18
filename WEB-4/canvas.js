@@ -80,6 +80,16 @@ document.addEventListener("DOMContentLoaded", function () {
     let scrollUnits = Math.floor(manualScrollY / SCROLL_PIXELS_PER_CHANGE) + START_IMAGE_NUMBER;
     let imageIndex = scrollUnits % TOTAL_IMAGES;
     imageIndex = Math.max(imageIndex, 1); // Ensure image index is within bounds
+    // Calculate scrolling progress
+    const maxScroll = TOTAL_IMAGES * SCROLL_PIXELS_PER_CHANGE;
+    const progress = Math.min(manualScrollY / maxScroll, 1);
+
+    // Calculate translateY value for the animation
+    const translateX = -80 + (150 * progress);
+
+    // Apply transform to the h1 element
+    const h1Element = document.getElementById("canvas-container-h1");
+    h1Element.style.transform = `translate(${translateX}%, 20%)`;
 
     const imageName = imageIndex.toString() + ".jpg";
     const imagePath = `./canvas-bg-images/${imageName}`;

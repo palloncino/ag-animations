@@ -21,7 +21,7 @@
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: center
+  justify-content: center;
 }
 
 canvas {
@@ -36,7 +36,6 @@ canvas {
   position: absolute;
   bottom: 0;
   left: 50%;
-  transform: translate(-50%, 20%);
   font-size: 14rem;
   line-height: 14rem;
   width: 100%;
