@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let imageIndex = scrollUnits % TOTAL_IMAGES;
     imageIndex = Math.max(imageIndex, 1); // Ensure image index is within bounds
 
-    const imageName = imageIndex.toString().padStart(6, "0") + ".jpg";
+    const imageName = imageIndex.toString() + ".jpg";
     const imagePath = `./canvas-bg-images/${imageName}`;
 
     // Use the cached image if available
@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
     preloadIndices.forEach((index) => {
-      const preloadImageName = index.toString().padStart(6, "0") + ".jpg";
+      const preloadImageName = index.toString() + ".jpg";
       const preloadImagePath = `./canvas-bg-images/${preloadImageName}`;
       // Only preload if the image is not already in the cache
       if (!imageCache[preloadImagePath]) {

@@ -1,5 +1,5 @@
 .content-canvas {
-  height: calc(var(--vh, 1vh) * 100);
+  height: calc(var(--vh, 1vh) * 60);
   /* background: url(./assets/images/monkey.webp); */
   background-position: top right;
   background-size: contain;
@@ -12,13 +12,14 @@
 }
 
 canvas {
+  transition: background .5s;
   position: relative;
 }
 
 .canvas-container {
 }
 
-.canvas-container h1 {
+/* .canvas-container h1 {
   z-index: 10;
   position: absolute;
   color: white;
@@ -28,7 +29,7 @@ canvas {
   line-height: 6rem;
   padding: 2rem;
   text-align: justify;
-}
+} */
 
 
 @media only screen and (max-width: 600px) {

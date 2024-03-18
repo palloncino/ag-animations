@@ -40,13 +40,7 @@ function customDesktopEffectCBG() {
   backgroundSky.style.position = "fixed";
   foregroundFactory.style.position = "fixed";
 
-  const scroll_to_discover_span = document.getElementById("Scroll_to_discover_span");
-  const scroll_to_discover_container = document.querySelector(".Scroll_to_discover");
-
   function changeScrollTitleColor() {
-    scroll_to_discover_container.style.background = '#000';
-    scroll_to_discover_container.style.transition = '.5s';
-    scroll_to_discover_span.style.color = '#fff';
   }
 
   changeScrollTitleColor();
@@ -76,7 +70,6 @@ function customDesktopEffectCBG() {
       scale = 1 + progress * 0.4; // Progress 0.5 => scale 1.2
     } else {
       // Scale down from 1.2 to 0.5 as progress goes from 0.5 to 1
-      changeScrollTitleColor();
       scale = 1.2 - (progress - 0.5) * 1.4; // Progress 1 => scale 0.5
     }
     heroHeader.style.transform = `scale(${scale})`;
@@ -92,8 +85,6 @@ function customDesktopEffectCBG() {
     if (effectiveScrollY >= maxScroll) {
       document.body.style.overflowY = "auto";
       window.removeEventListener("wheel", onWheel);
-      scroll_to_discover_container.style.background = 'transparent';
-      scroll_to_discover_span.style.color = 'unset';
       ignoreNextScrollEvent = true;
     } else {
       document.body.style.overflowY = "hidden";
@@ -110,8 +101,8 @@ function customDesktopEffectCBG() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        document.body.style.overflowY = "auto"; // Re-enable scrolling
-        window.addEventListener("wheel", onWheel, { passive: false });
+        // document.body.style.overflowY = "auto"; // Re-enable scrolling
+        // window.addEventListener("wheel", onWheel, { passive: false });
       }
     });
   });
