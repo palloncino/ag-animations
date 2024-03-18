@@ -1,5 +1,18 @@
+/* 
+| ASSETS
+*/
+@font-face {
+  font-family: 'Custom';
+  src: url('../assets/fonts/Poppins-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Custom-2';
+  src: url('../assets/fonts/Poppins-SemiBold.ttf');
+}
+
 .content-canvas {
-  height: calc(var(--vh, 1vh) * 60);
+  height: calc(var(--vh, 1vh) * 75);
   /* background: url(./assets/images/monkey.webp); */
   background-position: top right;
   background-size: contain;
@@ -16,20 +29,28 @@ canvas {
   position: relative;
 }
 
-.canvas-container {
+.canvas-container .canvas-container-h1 {
+  color: white;
+  font-family: 'Custom-2';
+  z-index: 99;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 20%);
+  font-size: 14rem;
+  line-height: 14rem;
+  width: 100%;
+  text-align: center;
+  margin: 0;
+  white-space: nowrap;
 }
 
-/* .canvas-container h1 {
-  z-index: 10;
-  position: absolute;
-  color: white;
-  margin: 0;
-  font-family: 'CustomBold';
-  font-size: 6rem;
-  line-height: 6rem;
-  padding: 2rem;
-  text-align: justify;
-} */
+.canvas-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
 
 
 @media only screen and (max-width: 600px) {
