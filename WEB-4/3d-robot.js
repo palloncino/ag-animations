@@ -1,4 +1,6 @@
-// Assuming THREE is globally available after loading it from a CDN in your HTML
+// At the top of your 3d-robot.js or any script that needs THREE/GLTFLoader
+import * as THREE from 'https://unpkg.com/three@0.127.0/build/three.module.js';
+import { GLTFLoader } from 'https://unpkg.com/three@0.127.0/examples/jsm/loaders/GLTFLoader.js';
 
 // Setup the scene, camera, and renderer
 const scene = new THREE.Scene();
