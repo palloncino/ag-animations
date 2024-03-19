@@ -283,7 +283,7 @@ header div {
 }
 
 .loading-icon {
-  font-size: 4rem;
+  font-size: 2rem;
   font-family: Custom-2;
   color: white;
   margin-bottom: 2rem;
@@ -306,6 +306,21 @@ header div {
 .loading-overlay.hide {
   opacity: 0;
   visibility: hidden;
+}
+
+#loadingBarContainer {
+  max-width: 400px;
+  width: 100%;
+  background: black;
+  border: 1px solid white;
+  height: 30px;
+  margin-bottom: 50px;
+}
+
+#loadingBar {
+  width: 0%;
+  height: 30px;
+  background: white;
 }
 
 /* 
@@ -465,3 +480,5 @@ header div {
     transform: translateY(200%)
   }
 }
+
+

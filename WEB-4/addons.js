@@ -1,6 +1,6 @@
 // At the top of your 3d-robot.js or any script that needs THREE/GLTFLoader
-import * as THREE from 'https://unpkg.com/three@0.127.0/build/three.module.js';
-import { GLTFLoader } from 'https://unpkg.com/three@0.127.0/examples/jsm/loaders/GLTFLoader.js';
+import * as THREE from "https://unpkg.com/three@0.127.0/build/three.module.js";
+import { GLTFLoader } from "https://unpkg.com/three@0.127.0/examples/jsm/loaders/GLTFLoader.js";
 
 // Event listener for DOMContentLoaded
 document.addEventListener("DOMContentLoaded", function () {
@@ -69,24 +69,27 @@ function loadGLTFModel(src) {
   });
 }
 
-// Function to load various types of media resources
+// Modify loadResource function to call updateProgress on success
 function loadResource(src, type) {
   return new Promise((resolve, reject) => {
     let media;
 
-    if (type === "image") {
-      media = new Image();
-      media.onload = () => resolve(media);
-      media.onerror = () => reject(new Error("Failed to load image: " + src));
-      media.src = src;
-    } else if (type === "video") {
-      media = document.createElement("video");
-      media.onloadedmetadata = () => resolve(media);
-      media.onerror = () => reject(new Error("Failed to load video: " + src));
+    if (type === "image" || type === "video") {
+      media = type === "image" ? new Image() : document.createElement("video");
+      media.onload = media.onloadedmetadata = () => {
+        updateProgress(); // Update progress on load
+        resolve(media);
+      };
+      media.onerror = () => {
+        reject(new Error(`Failed to load ${type}: ${src}`));
+      };
       media.src = src;
     } else if (type === "glb") {
       loadGLTFModel(src)
-        .then((scene) => resolve(scene))
+        .then((scene) => {
+          updateProgress(); // Update progress on load
+          resolve(scene);
+        })
         .catch((error) => reject(error));
     } else {
       reject(new Error("Unsupported media type"));
@@ -121,6 +124,15 @@ Promise.all(mediaPromises)
   .catch((error) => {
     console.error("A media file failed to load:", error);
   });
+
+let loadedAssets = 0;
+const totalAssets = mediaPromises.length;
+
+function updateProgress() {
+  loadedAssets++;
+  const progressPercentage = (loadedAssets / totalAssets) * 100;
+  document.getElementById("loadingBar").style.width = `${progressPercentage.toFixed(2)}%`;
+}
 
 // Function to remove loading overlay
 function removeLoadingOverlay() {
