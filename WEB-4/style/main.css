@@ -188,7 +188,7 @@ header div {
 
 .content-1 .glb-model-container {
   flex: 1;
-  background: red;
+  background: transparent;
 }
 
 .content-1 .text-container {

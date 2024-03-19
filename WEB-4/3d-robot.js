@@ -2,22 +2,39 @@
 
 // Setup the scene, camera, and renderer
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.set(0, 1, 2); // Adjust camera position based on the model's scale
+const camera = new THREE.PerspectiveCamera(75, 500 / 500, 0.1, 1000); // Adjust the aspect ratio to 1 (500/500)
+camera.position.set(0, 1.2, 2.5); // Adjust camera position based on the model's scale
 
 const renderer = new THREE.WebGLRenderer({ alpha: true }); // Set alpha: true for transparent background
-renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setSize(500, 500); // Set the renderer size to 500x500
+renderer.shadowMap.enabled = true; // Enable shadow rendering
 
 // Append the renderer's canvas to the specified container instead of document.body
-const container = document.querySelector(".content-1-inner-container");
+const container = document.querySelector(".glb-model-container");
 container.appendChild(renderer.domElement);
 
-// Lighting to make the model visible
-const ambientLight = new THREE.AmbientLight(0xcccccc, 0.4);
-scene.add(ambientLight);
-const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-directionalLight.position.set(1, 1, 0).normalize();
+const directionalLight = new THREE.DirectionalLight(0xffffff, 30);
+directionalLight.position.set(0, 0, 10); // Move the light closer to the model
+directionalLight.castShadow = true;
+// Adjust shadow camera frustum to fit the scene better
+directionalLight.shadow.camera.top = 50;
+directionalLight.shadow.camera.bottom = 50;
+directionalLight.shadow.camera.left = -5;
+directionalLight.shadow.camera.right = 5;
+directionalLight.shadow.camera.near = 0.1;
+directionalLight.shadow.camera.far = 20; // Decreased far value for a closer scene
 scene.add(directionalLight);
+
+// Add a point light for additional highlights and shadows
+const pointLight = new THREE.PointLight(0xffffff, 0.8, 50);
+pointLight.position.set(5, 5, 5);
+pointLight.castShadow = true;
+scene.add(pointLight);
+
+// Hemisphere light for soft ambient lighting from above
+const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.6);
+hemiLight.position.set(0, 20, 0);
+scene.add(hemiLight);
 
 // Check if GLTFLoader is available under the THREE namespace
 if (GLTFLoader) {
@@ -25,13 +42,20 @@ if (GLTFLoader) {
   loader.load(
     "./assets/models/robot.glb",
     function (gltf) {
+      gltf.scene.traverse(function (node) {
+        if (node.isMesh) {
+          node.castShadow = true;
+          node.receiveShadow = true;
+        }
+      });
+
       scene.add(gltf.scene);
 
       const mixer = new THREE.AnimationMixer(gltf.scene);
       if (gltf.animations.length) {
         const action = mixer.clipAction(gltf.animations[0]);
-        action.setLoop(THREE.LoopRepeat);
-        action.play();
+        action.setLoop(THREE.LoopRepeat); // Set the loop mode
+        action.play(); // Play the animation
       }
 
       const clock = new THREE.Clock();
