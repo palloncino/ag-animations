@@ -56,6 +56,10 @@ function advancePhase() {
   switch (currentPhase) {
     case Phase.FLOATING:
       currentPhase = Phase.ECLIPSE;
+      const blackSphere = spheres[1];
+      if (blackSphere) {
+        blackSphere.userData.targetScale = 1.4;
+      }
       break;
     case Phase.ECLIPSE:
       currentPhase = Phase.SCATTER;
@@ -66,11 +70,22 @@ function advancePhase() {
   }
 }
 
+
 function updateEclipseBehavior() {
   const orangeSphere = spheres[0];
   const blackSphere = spheres[1];
+
+  // Ensure the target positions are set
   orangeSphere.position.lerp(new THREE.Vector3(0, 0, 1), LERP_SPEED);
   blackSphere.position.lerp(new THREE.Vector3(0, 0, 0), LERP_SPEED);
+
+  // Update the scale of the black sphere if a targetScale is defined
+  if (blackSphere.userData.targetScale !== undefined) {
+    const targetScale = blackSphere.userData.targetScale;
+    const currentScale = blackSphere.scale.x;
+    const newScale = THREE.MathUtils.lerp(currentScale, targetScale, LERP_SPEED);
+    blackSphere.scale.set(newScale, newScale, newScale);
+  }
 }
 
 function updateSpriteOrientationToCamera() {
@@ -164,7 +179,7 @@ function activateHoverEffectSphere() {
       }
     }
 
-    // let do a mapping here 
+    // let do a mapping here
 
     const contentDiv = document.querySelector(`.${getCategoryValue(categoryClass)}`);
     if (contentDiv) {

@@ -6,7 +6,12 @@
     "start": "parcel index.html",
     "build": "parcel build index.html --dist-dir ./build"
   },
-  "keywords": ["Threejs", "Canvas", "Animations", "Web Design"],
+  "keywords": [
+    "Threejs",
+    "Canvas",
+    "Animations",
+    "Web Design"
+  ],
   "author": "Antonio Guiotto",
   "license": "ISC",
   "devDependencies": {

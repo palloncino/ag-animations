@@ -46,16 +46,6 @@ camera.position.z = 10;
 createSphere(colors.sphereOrange, initialPositions.orangeSphere);
 createSphere(colors.sphereBlack, initialPositions.blackSphere);
 
-document.addEventListener("mousemove", (event) => {
-  const rect = renderer.domElement.getBoundingClientRect();
-  const x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-  const y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-
-  // Update the mousePosition3D to reflect the mouse's position in 3D space
-  mousePosition3D.set(x, y, 0.5).unproject(camera); // Set Z based on your scene configuration
-  mousePosition3D.unproject(camera); // Converts the vector from screen space to 3D space
-});
-
 export function createSphere(color, position) {
   const geometry = new THREE.SphereGeometry(0.5, 32, 32);
   const material = new THREE.MeshBasicMaterial({ color: color });
@@ -67,6 +57,16 @@ export function createSphere(color, position) {
   spheres.push(sphere);
   return sphere;
 }
+
+document.addEventListener("mousemove", (event) => {
+  const rect = renderer.domElement.getBoundingClientRect();
+  const x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+  const y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+  // Update the mousePosition3D to reflect the mouse's position in 3D space
+  mousePosition3D.set(x, y, 0.5).unproject(camera); // Set Z based on your scene configuration
+  mousePosition3D.unproject(camera); // Converts the vector from screen space to 3D space
+});
 
 export function createTextTexture(text, fontSize = 64, textColor = "#000000") {
   const padding = 10; // Padding around text
