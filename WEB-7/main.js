@@ -6,6 +6,27 @@ let currentHoveredSphereId = null;
 const phases = ["FLOATING", "ECLIPSE", "SCATTER", "REDIRECT"];
 const hiddenContent = document.getElementById("hidden-content");
 
+const art_direction_container = document.getElementById("art_direction");
+const design_container = document.getElementById("design");
+const visual_art_container = document.getElementById("visual_art");
+const web_development_container = document.getElementById("web_development");
+const data_analysis_container = document.getElementById("data_analysis");
+const social_media_container = document.getElementById("social_media");
+
+function domContainerMapping(name) {
+  console.log(name)
+  switch (name) {
+    case "art_direction":
+      return art_direction_container;
+
+    case "design":
+      return design_container;
+
+    default:
+      art_direction_container;
+  }
+}
+
 function setup() {
   let p5Canvas = createCanvas(windowWidth, windowHeight);
   p5Canvas.id("p5Canvas");
@@ -20,7 +41,7 @@ function setup() {
       targetSize: 80,
       color: "#F79B00",
       text: "Art direction",
-      id: "art-direction",
+      id: "art_direction",
     },
     { x: 0, y: 0, size: 80, currentSize: 80, targetSize: 80, color: "#F79B00", text: "Design", id: "design" },
     { x: 0, y: 0, size: 80, currentSize: 80, targetSize: 80, color: "#F79B00", text: "Visual Art", id: "vistual_art" },
@@ -157,7 +178,7 @@ function draw() {
 
     fill(sphere.color);
     ellipse(sphere.x, sphere.y, sphere.currentSize);
-    
+
     // Displaying text on each sphere, if it has text
     if (sphere.text) {
       fill(0); // Text color
@@ -178,12 +199,12 @@ function draw() {
 
 function handleSphereHover(sphere) {
   if (currentHoveredSphereId !== sphere.id) {
-    console.log("Hovering over sphere: ", sphere.id);
-    // Perform actions when a new sphere is hovered
-    // Example: Show related content
+    const el = domContainerMapping(sphere.id)
+    console.log(sphere.id, el)
+    if (el) {
+      el.style.visibility = 'visible';
+    }
     if (currentHoveredSphereId) {
-      console.log(`No longer hovering over ${currentHoveredSphereId}, hiding related content.`);
-      // Hide the previously shown content
     }
     currentHoveredSphereId = sphere.id;
   }
@@ -191,8 +212,8 @@ function handleSphereHover(sphere) {
 
 function handleNoHover() {
   if (currentHoveredSphereId) {
-    console.log(`No longer hovering over ${currentHoveredSphereId}, hiding related content.`);
-    // Hide the content related to the previously hovered sphere
+    const el = domContainerMapping(currentHoveredSphereId)
+    el.style.visibility = 'hidden';
     currentHoveredSphereId = null;
   }
 }
