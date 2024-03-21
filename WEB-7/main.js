@@ -6,13 +6,15 @@ function setup() {
   let p5Canvas = createCanvas(windowWidth, windowHeight);
   p5Canvas.id("p5Canvas");
   spheres = [
-    { x: -100, y: 20, size: 40, color: "green", text: "" },
-    { x: 100, y: -20, size: 40, color: "blue", text: "" },
+    { x: -100, y: 20, size: 40, color: "#F79B00", text: "" },
+    { x: 100, y: -20, size: 40, color: "#000", text: "" },
 
-    { x: 0, y: 0, size: 40, color: "orange", text: "" },
-    { x: 0, y: 0, size: 40, color: "yellow", text: "" },
-    { x: 0, y: 0, size: 40, color: "red", text: "" },
-    { x: 0, y: 0, size: 40, color: "purple", text: "" },
+    { x: 0, y: 0, size: 40, color: "#F79B00", text: "" },
+    { x: 0, y: 0, size: 40, color: "#F79B00", text: "" },
+    { x: 0, y: 0, size: 40, color: "#F79B00", text: "" },
+    { x: 0, y: 0, size: 40, color: "#F79B00", text: "" },
+    { x: 0, y: 0, size: 40, color: "#F79B00", text: "" },
+    { x: 0, y: 0, size: 40, color: "#F79B00", text: "" },
   ];
 }
 
@@ -42,23 +44,20 @@ function draw() {
   }
 
   if (phases[currentPhase] === "SCATTER") {
-    visibleSpheres = spheres.slice(2, 6); // Determine which spheres are visible during SCATTER phase
+    visibleSpheres = spheres.slice(2, 7);
 
-    // Smoothly transition sphere[2] to its target
-    spheres[2].x = lerp(spheres[2].x, -300, 0.05); // Start from current x to -300
-    spheres[2].y = lerp(spheres[2].y, 0, 0.05); // Start from current y to 0
-
-    // Smoothly transition sphere[3] to its target
-    spheres[3].x = lerp(spheres[3].x, -100, 0.05); // Start from current x to -100
-    spheres[3].y = lerp(spheres[3].y, 0, 0.05); // Start from current y to 0
-
-    // Smoothly transition sphere[4] to its target
-    spheres[4].x = lerp(spheres[4].x, 100, 0.05); // Start from current x to 100
-    spheres[4].y = lerp(spheres[4].y, 0, 0.05); // Start from current y to 0
-
-    // Smoothly transition sphere[5] to its target
-    spheres[5].x = lerp(spheres[5].x, 300, 0.05); // Start from current x to 300
-    spheres[5].y = lerp(spheres[5].y, 0, 0.05); // Start from current y to 0
+    spheres[2].x = lerp(spheres[2].x, -400, 0.05);
+    spheres[2].y = lerp(spheres[2].y, 0, 0.05);
+    spheres[3].x = lerp(spheres[3].x, -200, 0.05);
+    spheres[3].y = lerp(spheres[3].y, 0, 0.05);
+    spheres[4].x = lerp(spheres[4].x, 0, 0.05);
+    spheres[4].y = lerp(spheres[4].y, 0, 0.05);
+    spheres[5].x = lerp(spheres[5].x, 200, 0.05);
+    spheres[5].y = lerp(spheres[5].y, 0, 0.05);
+    spheres[6].x = lerp(spheres[6].x, 400, 0.05);
+    spheres[6].y = lerp(spheres[6].y, 0, 0.05);
+    spheres[7].x = lerp(spheres[7].x, 600, 0.05);
+    spheres[7].y = lerp(spheres[7].y, 0, 0.05);
   }
 
   // Draw only the visible spheres
