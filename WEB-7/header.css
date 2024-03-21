@@ -1,4 +1,9 @@
+@font-face {
+  font-family: Custom;
+  src: url(./assets/fonts/AlbertSans.ttf);
+}
 .header {
+  font-family: Custom;
   box-sizing: border-box;
   position: fixed;
   display: flex;

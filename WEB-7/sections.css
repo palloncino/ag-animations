@@ -1,4 +1,10 @@
+@font-face {
+  font-family: Custom;
+  src: url(./assets/fonts/AlbertSans.ttf);
+}
+
 .section {
+  font-family: Custom;
   display: flex;
   flex-direction: column;
   justify-content: center;

@@ -44,8 +44,8 @@ function setup() {
   let p5Canvas = createCanvas(windowWidth, windowHeight);
   p5Canvas.id("p5Canvas");
   spheres = [
-    { x: -300, y: -20, size: 80, currentSize: 80, targetSize: 80, color: "#000", text: "" },
-    { x: 300, y: 20, size: 80, currentSize: 80, targetSize: 80, color: "#F79B00", text: "" },
+    { x: -300, y: 100, size: 80, currentSize: 80, targetSize: 80, color: "#000", text: "" },
+    { x: 300, y: -100, size: 80, currentSize: 80, targetSize: 80, color: "#F79B00", text: "" },
     {
       x: 0,
       y: 0,
