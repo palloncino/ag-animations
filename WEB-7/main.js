@@ -14,13 +14,25 @@ const data_analysis_container = document.getElementById("data_analysis");
 const social_media_container = document.getElementById("social_media");
 
 function domContainerMapping(name) {
-  console.log(name)
+  console.log({ name });
   switch (name) {
     case "art_direction":
       return art_direction_container;
 
     case "design":
       return design_container;
+
+    case "visual_art":
+      return visual_art_container;
+
+    case "web_development":
+      return web_development_container;
+
+    case "data_analysis":
+      return data_analysis_container;
+
+    case "social_media":
+      return social_media_container;
 
     default:
       art_direction_container;
@@ -44,7 +56,7 @@ function setup() {
       id: "art_direction",
     },
     { x: 0, y: 0, size: 80, currentSize: 80, targetSize: 80, color: "#F79B00", text: "Design", id: "design" },
-    { x: 0, y: 0, size: 80, currentSize: 80, targetSize: 80, color: "#F79B00", text: "Visual Art", id: "vistual_art" },
+    { x: 0, y: 0, size: 80, currentSize: 80, targetSize: 80, color: "#F79B00", text: "Visual Art", id: "visual_art" },
     {
       x: 0,
       y: 0,
@@ -199,10 +211,10 @@ function draw() {
 
 function handleSphereHover(sphere) {
   if (currentHoveredSphereId !== sphere.id) {
-    const el = domContainerMapping(sphere.id)
-    console.log(sphere.id, el)
+    const el = domContainerMapping(sphere.id);
+    console.log(sphere.id, el);
     if (el) {
-      el.style.visibility = 'visible';
+      el.style.visibility = "visible";
     }
     if (currentHoveredSphereId) {
     }
@@ -212,8 +224,10 @@ function handleSphereHover(sphere) {
 
 function handleNoHover() {
   if (currentHoveredSphereId) {
-    const el = domContainerMapping(currentHoveredSphereId)
-    el.style.visibility = 'hidden';
+    const el = domContainerMapping(currentHoveredSphereId);
+    if (el) {
+      el.style.visibility = "hidden";
+    }
     currentHoveredSphereId = null;
   }
 }

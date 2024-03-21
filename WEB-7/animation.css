@@ -5,9 +5,17 @@
   z-index: 2;
 }
 
-#art_direction {
-  padding: 1rem;
+#art_direction,
+#design,
+#visual_art,
+#web_development,
+#data_analysis,
+#social_media {
   visibility: hidden;
+}
+
+.content-container {
+  padding: 1rem;
   position: fixed;
   z-index: 200;
   top: 50%;
@@ -16,9 +24,9 @@
   border: 1px solid;
 }
 
-#art_direction h1 {
+.content-container h1 {
   margin: 0;
 }
-#art_direction p {
+.content-container p {
   margin: 0;
 }
