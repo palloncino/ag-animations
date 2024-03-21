@@ -12,6 +12,7 @@
 #data_analysis,
 #social_media {
   visibility: hidden;
+  opacity: 0;
 }
 
 .content-container {
@@ -21,12 +22,15 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  border: 1px solid;
+  transition: .5s;
 }
 
 .content-container h1 {
-  margin: 0;
+  margin: 0 0 1rem 0;
+  font-size: 4rem;  
 }
 .content-container p {
   margin: 0;
+  font-size: 1.4rem;  
+  line-height: 160%;
 }

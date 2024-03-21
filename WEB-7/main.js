@@ -14,7 +14,6 @@ const data_analysis_container = document.getElementById("data_analysis");
 const social_media_container = document.getElementById("social_media");
 
 function domContainerMapping(name) {
-  console.log({ name });
   switch (name) {
     case "art_direction":
       return art_direction_container;
@@ -212,9 +211,9 @@ function draw() {
 function handleSphereHover(sphere) {
   if (currentHoveredSphereId !== sphere.id) {
     const el = domContainerMapping(sphere.id);
-    console.log(sphere.id, el);
     if (el) {
       el.style.visibility = "visible";
+      el.style.opacity = 1;
     }
     if (currentHoveredSphereId) {
     }
@@ -227,6 +226,7 @@ function handleNoHover() {
     const el = domContainerMapping(currentHoveredSphereId);
     if (el) {
       el.style.visibility = "hidden";
+      el.style.opacity = 0;
     }
     currentHoveredSphereId = null;
   }
