@@ -2,6 +2,7 @@ let spheres = [];
 let currentPhase = 0;
 let scaleTimerStarted = false;
 let scaleTimer = 0;
+let currentHoveredSphereId = null;
 const phases = ["FLOATING", "ECLIPSE", "SCATTER", "REDIRECT"];
 const hiddenContent = document.getElementById("hidden-content");
 
@@ -150,15 +151,16 @@ function draw() {
     sphere.currentSize = lerp(sphere.currentSize, sphere.targetSize, 0.1);
 
     if (isHovering) {
-      handleSphereHover(sphere); // Call the handler with the hovered sphere
+      handleSphereHover(sphere);
       isHoveringAnySphere = true;
     }
 
     fill(sphere.color);
     ellipse(sphere.x, sphere.y, sphere.currentSize);
-
-    if (phases[currentPhase] === "SCATTER" && sphere.text) {
-      fill(0);
+    
+    // Displaying text on each sphere, if it has text
+    if (sphere.text) {
+      fill(0); // Text color
       noStroke();
       textAlign(CENTER, CENTER);
       textSize(16);
@@ -166,9 +168,31 @@ function draw() {
     }
   }
 
+  // If no sphere is hovered, call handleNoHover
+  if (!isHoveringAnySphere) {
+    handleNoHover();
+  }
+
   cursor(isHoveringAnySphere ? "pointer" : "default");
 }
 
 function handleSphereHover(sphere) {
-  console.log("Hovering over sphere: ", sphere.id);
+  if (currentHoveredSphereId !== sphere.id) {
+    console.log("Hovering over sphere: ", sphere.id);
+    // Perform actions when a new sphere is hovered
+    // Example: Show related content
+    if (currentHoveredSphereId) {
+      console.log(`No longer hovering over ${currentHoveredSphereId}, hiding related content.`);
+      // Hide the previously shown content
+    }
+    currentHoveredSphereId = sphere.id;
+  }
+}
+
+function handleNoHover() {
+  if (currentHoveredSphereId) {
+    console.log(`No longer hovering over ${currentHoveredSphereId}, hiding related content.`);
+    // Hide the content related to the previously hovered sphere
+    currentHoveredSphereId = null;
+  }
 }
