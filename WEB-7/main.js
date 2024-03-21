@@ -3,7 +3,7 @@ let currentPhase = 0;
 let scaleTimerStarted = false;
 let scaleTimer = 0;
 let currentHoveredSphereId = null;
-let hoverLock = false;
+let hoverLock = true;
 let firstTimeScatter = true;
 let firstScatterClick = true;
 const phases = ["FLOATING", "ECLIPSE", "SCATTER", "REDIRECT"];
@@ -102,6 +102,7 @@ function exitSceneAndRedirect(_sphere) {
     } else {
       keeper = sphere; // Keep the selected sphere
       keeper.isOrbiting = true;
+      keeper.orbitCenter = { x: keeper.x, y: keeper.y }
     }
   });
 }
@@ -109,6 +110,9 @@ function exitSceneAndRedirect(_sphere) {
 function mousePressed() {
   // Ensure this logic only applies during the "ECLIPSE" phase
   if (phases[currentPhase] === "ECLIPSE") {
+    if (hoverLock) {
+      return;
+    }
     const clickedSphere = checkSphereClicked();
     if (clickedSphere) {
       // A sphere was clicked, transition to the next phase
@@ -178,6 +182,7 @@ function draw() {
     // After 500ms have passed since the timer started, begin scaling
     if (scaleTimerStarted && millis() - scaleTimer > 500) {
       spheres[0].currentSize = lerp(spheres[0].currentSize, 120, 0.05);
+      hoverLock = false;
     }
   }
 
@@ -216,8 +221,14 @@ function draw() {
       // Continue moving the sphere upwards off-screen
       sphere.y = lerp(sphere.y, -1000, 0.05);
     }  else if (sphere.isOrbiting) {
-      // Apply orbital behavior only to the keeper sphere marked for orbiting
-      applyOrbitalBehavior(sphere, {x: sphere.x, y: sphere.y}, 30, 20, 100, true);
+      const angleSpeed = 0.05; // Slower speed
+      const time = frameCount * angleSpeed;
+      sphere.y = sphere.orbitCenter.y + sin(time) * 15;
+      const el = domContainerMapping(sphere.id);
+      if (el && !hoverLock) {
+        el.style.visibility = "visible";
+        el.style.opacity = 1;
+      }
     } else if (phases[currentPhase] === "SCATTER") {
       // SCATTER phase specific positioning logic here
       // This is where your existing SCATTER logic applies if the sphere is not exiting
@@ -225,8 +236,11 @@ function draw() {
 
     let d = dist(mouseX - width / 2, mouseY - height / 2, sphere.x, sphere.y);
     let isHovering = d < sphere.size / 2;
-    sphere.targetSize = isHovering ? sphere.size * hoverScale : sphere.size;
     sphere.currentSize = lerp(sphere.currentSize, sphere.targetSize, 0.1);
+
+    if (!hoverLock) {
+      sphere.targetSize = isHovering ? sphere.size * hoverScale : sphere.size;
+    }
 
     if (isHovering) {
       handleSphereHover(sphere);
