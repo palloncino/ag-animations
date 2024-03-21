@@ -2,7 +2,7 @@ let spheres = [];
 let currentPhase = 0;
 let scaleTimerStarted = false;
 let scaleTimer = 0;
-const phases = ["FLOATING", "ECLIPSE", "SCATTER", "ANOTHER_PHASE"];
+const phases = ["FLOATING", "ECLIPSE", "SCATTER", "REDIRECT"];
 
 function setup() {
   let p5Canvas = createCanvas(windowWidth, windowHeight);
@@ -18,25 +18,39 @@ function setup() {
     { x: 0, y: 0, size: 60, currentSize: 60, targetSize: 60, color: "#F79B00", text: "Data analysis" },
     { x: 0, y: 0, size: 60, currentSize: 60, targetSize: 60, color: "#F79B00", text: "Social media" },
   ];
+  setTimeout(() => currentPhase = (currentPhase + 1) % phases.length, 500)
 }
 
 function mouseClicked() {
+  if (currentPhase === 0) {
+    return;
+  }
   currentPhase = (currentPhase + 1) % phases.length;
+}
+
+function applyOrbitalBehavior(sphere, orbitCenter, majorAxis, minorAxis, frameOffset, clockwise = true) {
+  console.log(sphere)
+  const directionMultiplier = clockwise ? 1 : -1;
+  const angle = (frameCount + frameOffset) * 0.02 * directionMultiplier;
+  sphere.x = orbitCenter.x + cos(angle) * majorAxis;
+  sphere.y = orbitCenter.y + sin(angle) * minorAxis;
 }
 
 function draw() {
   background(220);
   translate(width / 2, height / 2);
 
-  const hoverScale = 1.5;
+  let isHoveringAnySphere = false;
+  const hoverScale = 1.2;
   let visibleSpheres = [];
 
   noStroke();
 
   if (phases[currentPhase] === "FLOATING") {
     visibleSpheres = spheres.slice(0, 2);
-    spheres[0].y += sin(frameCount / 10) * 2;
-    spheres[1].y += sin(frameCount / 10) * 2;
+    const orbitCenter = [{ x: 150, y: -50 }, { x: -150, y: 50 }];
+    applyOrbitalBehavior(visibleSpheres[1], orbitCenter[0], 30, 20, 100, true);
+    applyOrbitalBehavior(visibleSpheres[0], orbitCenter[1], 30, 20, 100, false);
   }
 
   if (phases[currentPhase] === "ECLIPSE") {
@@ -84,11 +98,21 @@ function draw() {
     spheres[7].y = lerp(spheres[7].y, 0, 0.05);
   }
 
+  if (phases[currentPhase] === "REDIRECT") {
+    visibleSpheres = [];
+    document.body.style.overflow = 'unset';
+    const canvas = document.querySelector('#p5Canvas');
+    canvas.style.display = 'none';
+  }
+
   for (let sphere of visibleSpheres) {
     let d = dist(mouseX - width / 2, mouseY - height / 2, sphere.x, sphere.y);
     let isHovering = d < sphere.size / 2;
     sphere.targetSize = isHovering ? sphere.size * hoverScale : sphere.size;
     sphere.currentSize = lerp(sphere.currentSize, sphere.targetSize, 0.1);
+    if (isHovering) {
+      isHoveringAnySphere = true; // Set flag true if hovering
+    }
 
     fill(sphere.color);
     ellipse(sphere.x, sphere.y, sphere.currentSize);
@@ -99,6 +123,11 @@ function draw() {
       textAlign(CENTER, CENTER);
       textSize(16);
       text(sphere.text, sphere.x, sphere.y);
+    }
+    if (isHoveringAnySphere) {
+      cursor('pointer');
+    } else {
+      cursor('default');
     }
   }
 }
