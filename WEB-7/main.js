@@ -9,11 +9,12 @@ function setup() {
     { x: -100, y: 20, size: 40, currentSize: 40, targetSize: 40, color: "#F79B00", text: "" },
     { x: 100, y: -20, size: 40, currentSize: 40, targetSize: 40, color: "#000", text: "" },
 
-    { x: 0, y: 0, size: 40, currentSize: 40, targetSize: 40, color: "#F79B00", text: "" },
-    { x: 0, y: 0, size: 40, currentSize: 40, targetSize: 40, color: "#F79B00", text: "" },
-    { x: 0, y: 0, size: 40, currentSize: 40, targetSize: 40, color: "#F79B00", text: "" },
-    { x: 0, y: 0, size: 40, currentSize: 40, targetSize: 40, color: "#F79B00", text: "" },
-    { x: 0, y: 0, size: 40, currentSize: 40, targetSize: 40, color: "#F79B00", text: "" }
+    { x: 0, y: 0, size: 40, currentSize: 40, targetSize: 40, color: "#F79B00", text: "Art direction" },
+    { x: 0, y: 0, size: 40, currentSize: 40, targetSize: 40, color: "#F79B00", text: "Design" },
+    { x: 0, y: 0, size: 40, currentSize: 40, targetSize: 40, color: "#F79B00", text: "Visual Art" },
+    { x: 0, y: 0, size: 40, currentSize: 40, targetSize: 40, color: "#F79B00", text: "Web development" },
+    { x: 0, y: 0, size: 40, currentSize: 40, targetSize: 40, color: "#F79B00", text: "Data analysis" },
+    { x: 0, y: 0, size: 40, currentSize: 40, targetSize: 40, color: "#F79B00", text: "Social media" }
   ];
 }
 
@@ -26,7 +27,7 @@ function draw() {
   translate(width / 2, height / 2);
 
   const hoverScale = 1.5;
-  let visibleSpheres;
+  let visibleSpheres = [];
 
   if (phases[currentPhase] === "FLOATING") {
     visibleSpheres = spheres.slice(0, 2);
@@ -44,7 +45,7 @@ function draw() {
   }
 
   if (phases[currentPhase] === "SCATTER") {
-    visibleSpheres = spheres.slice(2, 7);
+    visibleSpheres = spheres.slice(2, 8);
 
     spheres[2].x = lerp(spheres[2].x, -400, 0.05);
     spheres[2].y = lerp(spheres[2].y, 0, 0.05);
@@ -56,24 +57,24 @@ function draw() {
     spheres[5].y = lerp(spheres[5].y, 0, 0.05);
     spheres[6].x = lerp(spheres[6].x, 400, 0.05);
     spheres[6].y = lerp(spheres[6].y, 0, 0.05);
+    spheres[7].x = lerp(spheres[7].x, 500, 0.05);
+    spheres[7].y = lerp(spheres[7].y, 0, 0.05);
   }
 
-  // Draw only the visible spheres
   for (let sphere of visibleSpheres) {
     let d = dist(mouseX - width / 2, mouseY - height / 2, sphere.x, sphere.y);
     let isHovering = d < sphere.size / 2;
     sphere.targetSize = isHovering ? sphere.size * hoverScale : sphere.size;
-    // Smoothly transition currentSize towards targetSize
     sphere.currentSize = lerp(sphere.currentSize, sphere.targetSize, 0.1);
 
-    // Use currentSize for drawing
     fill(sphere.color);
     ellipse(sphere.x, sphere.y, sphere.currentSize);
 
-    // If there's text for the sphere, draw it
-    if (sphere.text) {
-      fill(0); // Text color
+    if (phases[currentPhase] === "SCATTER" && sphere.text) {
+      fill(0);
+      noStroke();
       textAlign(CENTER, CENTER);
+      textSize(16);
       text(sphere.text, sphere.x, sphere.y);
     }
   }
