@@ -29,6 +29,8 @@ function draw() {
   const hoverScale = 1.5;
   let visibleSpheres = [];
 
+  noStroke();
+
   if (phases[currentPhase] === "FLOATING") {
     visibleSpheres = spheres.slice(0, 2);
     spheres[0].y += sin(frameCount / 10) * 2;
