@@ -4,7 +4,8 @@ let scaleTimerStarted = false;
 let scaleTimer = 0;
 let currentHoveredSphereId = null;
 let hoverLock = false;
-let firstTimeScatter = true; 
+let firstTimeScatter = true;
+let firstScatterClick = true;
 const phases = ["FLOATING", "ECLIPSE", "SCATTER", "REDIRECT"];
 const hiddenContent = document.getElementById("hidden-content");
 
@@ -92,11 +93,41 @@ function setup() {
   setTimeout(() => (currentPhase = (currentPhase + 1) % phases.length), 0);
 }
 
-function mouseClicked() {
-  if (currentPhase === 0) {
-    return;
+function exitSceneAndRedirect(_sphere) {
+  let keeper;
+  spheres.slice(2, 8).filter((sphere) => {
+    if (sphere.id !== _sphere.id) {
+      sphere.isExiting = true; // Mark the sphere as exiting
+      return true;
+    } else {
+      keeper = sphere; // Keep the selected sphere
+    }
+  });
+}
+
+function mousePressed() {
+  // Ensure this logic only applies during the "ECLIPSE" phase
+  if (phases[currentPhase] === "ECLIPSE") {
+    const clickedSphere = checkSphereClicked();
+    if (clickedSphere) {
+      // A sphere was clicked, transition to the next phase
+      currentPhase = (currentPhase + 1) % phases.length;
+    }
   }
-  currentPhase = (currentPhase + 1) % phases.length;
+  if (phases[currentPhase] === "SCATTER") {
+    if (firstScatterClick) {
+      firstScatterClick = false;
+      return;
+    } else {
+      for (let sphere of spheres.slice(2)) {
+        let distance = dist(mouseX - width / 2, mouseY - height / 2, sphere.x, sphere.y);
+        if (distance < sphere.size / 2) {
+          exitSceneAndRedirect(sphere);
+          return;
+        }
+      }
+    }
+  }
 }
 
 function applyOrbitalBehavior(sphere, orbitCenter, majorAxis, minorAxis, frameOffset, clockwise = true) {
@@ -178,14 +209,16 @@ function draw() {
     spheres[7].y = lerp(spheres[7].y, -150, 0.05);
   }
 
-  if (phases[currentPhase] === "REDIRECT") {
-    visibleSpheres = [];
-    document.body.style.overflow = "unset";
-    const canvas = document.querySelector("#p5Canvas");
-    canvas.style.display = "none";
-  }
-
   for (let sphere of visibleSpheres) {
+
+    if (sphere.isExiting) {
+      // Continue moving the sphere upwards off-screen
+      sphere.y = lerp(sphere.y, -1000, 0.05);
+    } else if (phases[currentPhase] === "SCATTER") {
+      // SCATTER phase specific positioning logic here
+      // This is where your existing SCATTER logic applies if the sphere is not exiting
+    }
+
     let d = dist(mouseX - width / 2, mouseY - height / 2, sphere.x, sphere.y);
     let isHovering = d < sphere.size / 2;
     sphere.targetSize = isHovering ? sphere.size * hoverScale : sphere.size;
@@ -200,7 +233,7 @@ function draw() {
     ellipse(sphere.x, sphere.y, sphere.currentSize);
 
     // Displaying text on each sphere, if it has text
-    if (sphere.text) {
+    if (sphere.text && !sphere.isExiting) {
       fill(0); // Text color
       noStroke();
       textAlign(CENTER, CENTER);
@@ -237,4 +270,15 @@ function handleNoHover() {
     }
     currentHoveredSphereId = null;
   }
+}
+
+function checkSphereClicked() {
+  for (let i = 0; i < spheres.length; i++) {
+    const sphere = spheres[i];
+    const d = dist(mouseX - width / 2, mouseY - height / 2, sphere.x, sphere.y);
+    if (d < sphere.size / 2) {
+      return sphere; // Return the clicked sphere
+    }
+  }
+  return null; // No sphere was clicked
 }
