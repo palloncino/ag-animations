@@ -1,6 +1,5 @@
 .header {
   box-sizing: border-box;
-  background: rgb(230, 230, 230);
   position: fixed;
   display: flex;
   justify-content: space-between;
@@ -9,7 +8,6 @@
   width: 100%;
   max-width: 1200px;
   height: 40px;
-  border: 1px solid;
   left: 50%;
   transform: translateX(-50%);
 }

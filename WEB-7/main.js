@@ -3,6 +3,7 @@ let currentPhase = 0;
 let scaleTimerStarted = false;
 let scaleTimer = 0;
 const phases = ["FLOATING", "ECLIPSE", "SCATTER", "REDIRECT"];
+const hiddenContent = document.getElementById("hidden-content");
 
 function setup() {
   let p5Canvas = createCanvas(windowWidth, windowHeight);
@@ -10,14 +11,50 @@ function setup() {
   spheres = [
     { x: -100, y: -20, size: 80, currentSize: 80, targetSize: 80, color: "#000", text: "" },
     { x: 100, y: 20, size: 80, currentSize: 80, targetSize: 80, color: "#F79B00", text: "" },
-    { x: 0, y: 0, size:80, currentSize:80, targetSize:80, color: "#F79B00", text: "Art direction" },
-    { x: 0, y: 0, size:80, currentSize:80, targetSize:80, color: "#F79B00", text: "Design" },
-    { x: 0, y: 0, size:80, currentSize:80, targetSize:80, color: "#F79B00", text: "Visual Art" },
-    { x: 0, y: 0, size:80, currentSize:80, targetSize:80, color: "#F79B00", text: "Web development" },
-    { x: 0, y: 0, size:80, currentSize:80, targetSize:80, color: "#F79B00", text: "Data analysis" },
-    { x: 0, y: 0, size:80, currentSize:80, targetSize:80, color: "#F79B00", text: "Social media" },
+    {
+      x: 0,
+      y: 0,
+      size: 80,
+      currentSize: 80,
+      targetSize: 80,
+      color: "#F79B00",
+      text: "Art direction",
+      id: "art-direction",
+    },
+    { x: 0, y: 0, size: 80, currentSize: 80, targetSize: 80, color: "#F79B00", text: "Design", id: "design" },
+    { x: 0, y: 0, size: 80, currentSize: 80, targetSize: 80, color: "#F79B00", text: "Visual Art", id: "vistual_art" },
+    {
+      x: 0,
+      y: 0,
+      size: 80,
+      currentSize: 80,
+      targetSize: 80,
+      color: "#F79B00",
+      text: "Web development",
+      id: "web_development",
+    },
+    {
+      x: 0,
+      y: 0,
+      size: 80,
+      currentSize: 80,
+      targetSize: 80,
+      color: "#F79B00",
+      text: "Data analysis",
+      id: "data_analysis",
+    },
+    {
+      x: 0,
+      y: 0,
+      size: 80,
+      currentSize: 80,
+      targetSize: 80,
+      color: "#F79B00",
+      text: "Social media",
+      id: "social_media",
+    },
   ];
-  setTimeout(() => currentPhase = (currentPhase + 1) % phases.length, 500)
+  setTimeout(() => (currentPhase = (currentPhase + 1) % phases.length), 500);
 }
 
 function mouseClicked() {
@@ -28,7 +65,6 @@ function mouseClicked() {
 }
 
 function applyOrbitalBehavior(sphere, orbitCenter, majorAxis, minorAxis, frameOffset, clockwise = true) {
-  console.log(sphere)
   const directionMultiplier = clockwise ? 1 : -1;
   const angle = (frameCount + frameOffset) * 0.02 * directionMultiplier;
   sphere.x = orbitCenter.x + cos(angle) * majorAxis;
@@ -36,7 +72,7 @@ function applyOrbitalBehavior(sphere, orbitCenter, majorAxis, minorAxis, frameOf
 }
 
 function draw() {
-  background(220);
+  background("#F0EBE6");
   translate(width / 2, height / 2);
 
   let isHoveringAnySphere = false;
@@ -47,7 +83,10 @@ function draw() {
 
   if (phases[currentPhase] === "FLOATING") {
     visibleSpheres = spheres.slice(0, 2);
-    const orbitCenter = [{ x: 150, y: -50 }, { x: -150, y: 50 }];
+    const orbitCenter = [
+      { x: 150, y: -50 },
+      { x: -150, y: 50 },
+    ];
     applyOrbitalBehavior(visibleSpheres[1], orbitCenter[0], 30, 20, 100, true);
     applyOrbitalBehavior(visibleSpheres[0], orbitCenter[1], 30, 20, 100, false);
   }
@@ -99,9 +138,9 @@ function draw() {
 
   if (phases[currentPhase] === "REDIRECT") {
     visibleSpheres = [];
-    document.body.style.overflow = 'unset';
-    const canvas = document.querySelector('#p5Canvas');
-    canvas.style.display = 'none';
+    document.body.style.overflow = "unset";
+    const canvas = document.querySelector("#p5Canvas");
+    canvas.style.display = "none";
   }
 
   for (let sphere of visibleSpheres) {
@@ -109,8 +148,10 @@ function draw() {
     let isHovering = d < sphere.size / 2;
     sphere.targetSize = isHovering ? sphere.size * hoverScale : sphere.size;
     sphere.currentSize = lerp(sphere.currentSize, sphere.targetSize, 0.1);
+
     if (isHovering) {
-      isHoveringAnySphere = true; // Set flag true if hovering
+      handleSphereHover(sphere); // Call the handler with the hovered sphere
+      isHoveringAnySphere = true;
     }
 
     fill(sphere.color);
@@ -123,10 +164,11 @@ function draw() {
       textSize(16);
       text(sphere.text, sphere.x, sphere.y);
     }
-    if (isHoveringAnySphere) {
-      cursor('pointer');
-    } else {
-      cursor('default');
-    }
   }
+
+  cursor(isHoveringAnySphere ? "pointer" : "default");
+}
+
+function handleSphereHover(sphere) {
+  console.log("Hovering over sphere: ", sphere.id);
 }
