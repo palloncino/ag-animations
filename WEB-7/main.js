@@ -101,6 +101,7 @@ function exitSceneAndRedirect(_sphere) {
       return true;
     } else {
       keeper = sphere; // Keep the selected sphere
+      keeper.isOrbiting = true;
     }
   });
 }
@@ -214,6 +215,9 @@ function draw() {
     if (sphere.isExiting) {
       // Continue moving the sphere upwards off-screen
       sphere.y = lerp(sphere.y, -1000, 0.05);
+    }  else if (sphere.isOrbiting) {
+      // Apply orbital behavior only to the keeper sphere marked for orbiting
+      applyOrbitalBehavior(sphere, {x: sphere.x, y: sphere.y}, 30, 20, 100, true);
     } else if (phases[currentPhase] === "SCATTER") {
       // SCATTER phase specific positioning logic here
       // This is where your existing SCATTER logic applies if the sphere is not exiting
@@ -233,7 +237,7 @@ function draw() {
     ellipse(sphere.x, sphere.y, sphere.currentSize);
 
     // Displaying text on each sphere, if it has text
-    if (sphere.text && !sphere.isExiting) {
+    if (sphere.text && !sphere.isExiting && !sphere.isOrbiting) {
       fill(0); // Text color
       noStroke();
       textAlign(CENTER, CENTER);
