@@ -6,15 +6,15 @@ function setup() {
   let p5Canvas = createCanvas(windowWidth, windowHeight);
   p5Canvas.id("p5Canvas");
   spheres = [
-    { x: -100, y: 20, size: 40, currentSize: 40, targetSize: 40, color: "#F79B00", text: "" },
-    { x: 100, y: -20, size: 40, currentSize: 40, targetSize: 40, color: "#000", text: "" },
+    { x: -100, y: 20, size: 60, currentSize: 60, targetSize: 60, color: "#F79B00", text: "" },
+    { x: 100, y: -20, size: 60, currentSize: 60, targetSize: 60, color: "#000", text: "" },
 
-    { x: 0, y: 0, size: 40, currentSize: 40, targetSize: 40, color: "#F79B00", text: "Art direction" },
-    { x: 0, y: 0, size: 40, currentSize: 40, targetSize: 40, color: "#F79B00", text: "Design" },
-    { x: 0, y: 0, size: 40, currentSize: 40, targetSize: 40, color: "#F79B00", text: "Visual Art" },
-    { x: 0, y: 0, size: 40, currentSize: 40, targetSize: 40, color: "#F79B00", text: "Web development" },
-    { x: 0, y: 0, size: 40, currentSize: 40, targetSize: 40, color: "#F79B00", text: "Data analysis" },
-    { x: 0, y: 0, size: 40, currentSize: 40, targetSize: 40, color: "#F79B00", text: "Social media" }
+    { x: 0, y: 0, size: 60, currentSize: 60, targetSize: 60, color: "#F79B00", text: "Art direction" },
+    { x: 0, y: 0, size: 60, currentSize: 60, targetSize: 60, color: "#F79B00", text: "Design" },
+    { x: 0, y: 0, size: 60, currentSize: 60, targetSize: 60, color: "#F79B00", text: "Visual Art" },
+    { x: 0, y: 0, size: 60, currentSize: 60, targetSize: 60, color: "#F79B00", text: "Web development" },
+    { x: 0, y: 0, size: 60, currentSize: 60, targetSize: 60, color: "#F79B00", text: "Data analysis" },
+    { x: 0, y: 0, size: 60, currentSize: 60, targetSize: 60, color: "#F79B00", text: "Social media" },
   ];
 }
 
