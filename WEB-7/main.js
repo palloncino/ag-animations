@@ -1,13 +1,13 @@
 let spheres = [];
 let currentPhase = 0;
-const phases = ["FLOATING", "ECLIPSE", "SCATTER", "ANOTHER_PHASE"]; // Example phases
+const phases = ["FLOATING", "ECLIPSE", "SCATTER", "ANOTHER_PHASE"];
 
 function setup() {
   let p5Canvas = createCanvas(windowWidth, windowHeight);
   p5Canvas.id("p5Canvas");
   spheres = [
-    { x: -100, y: 20, size: 60, currentSize: 60, targetSize: 60, color: "#F79B00", text: "" },
-    { x: 100, y: -20, size: 60, currentSize: 60, targetSize: 60, color: "#000", text: "" },
+    { x: -100, y: -20, size: 60, currentSize: 60, targetSize: 60, color: "#000", text: "" },
+    { x: 100, y: 20, size: 60, currentSize: 60, targetSize: 60, color: "#F79B00", text: "" },
 
     { x: 0, y: 0, size: 60, currentSize: 60, targetSize: 60, color: "#F79B00", text: "Art direction" },
     { x: 0, y: 0, size: 60, currentSize: 60, targetSize: 60, color: "#F79B00", text: "Design" },
@@ -44,6 +44,15 @@ function draw() {
 
     spheres[1].x = lerp(spheres[1].x, 0, 0.05);
     spheres[1].y = lerp(spheres[1].y, 0, 0.05);
+    spheres[0].currentSize = lerp(spheres[0].currentSize, 80, 0.05);
+    
+    // Then, draw the black sphere first
+    fill(spheres[1].color);
+    ellipse(spheres[1].x, spheres[1].y, spheres[1].currentSize);
+
+    // And finally, draw the orange sphere to ensure it is on top
+    fill(spheres[0].color);
+    ellipse(spheres[0].x, spheres[0].y, spheres[0].currentSize);
   }
 
   if (phases[currentPhase] === "SCATTER") {
