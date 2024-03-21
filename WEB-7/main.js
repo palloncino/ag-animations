@@ -3,6 +3,8 @@ let currentPhase = 0;
 let scaleTimerStarted = false;
 let scaleTimer = 0;
 let currentHoveredSphereId = null;
+let hoverLock = false;
+let firstTimeScatter = true; 
 const phases = ["FLOATING", "ECLIPSE", "SCATTER", "REDIRECT"];
 const hiddenContent = document.getElementById("hidden-content");
 
@@ -148,6 +150,13 @@ function draw() {
   }
 
   if (phases[currentPhase] === "SCATTER") {
+    if (!hoverLock && firstTimeScatter) {
+      hoverLock = true;
+      firstTimeScatter = false;
+      setTimeout(() => {
+        hoverLock = false;
+      }, 500);
+    }
     visibleSpheres = spheres.slice(2, 8);
 
     spheres[2].x = lerp(spheres[2].x, -500, 0.05);
@@ -211,11 +220,9 @@ function draw() {
 function handleSphereHover(sphere) {
   if (currentHoveredSphereId !== sphere.id) {
     const el = domContainerMapping(sphere.id);
-    if (el) {
+    if (el && !hoverLock) {
       el.style.visibility = "visible";
       el.style.opacity = 1;
-    }
-    if (currentHoveredSphereId) {
     }
     currentHoveredSphereId = sphere.id;
   }
