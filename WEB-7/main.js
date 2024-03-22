@@ -102,7 +102,7 @@ function exitSceneAndRedirect(_sphere) {
     } else {
       keeper = sphere; // Keep the selected sphere
       keeper.isOrbiting = true;
-      keeper.orbitCenter = { x: keeper.x, y: keeper.y }
+      keeper.orbitCenter = { x: keeper.x, y: keeper.y };
     }
   });
 }
@@ -196,34 +196,69 @@ function draw() {
     }
     visibleSpheres = spheres.slice(2, 8);
 
-    spheres[2].x = lerp(spheres[2].x, -500, 0.05);
-    spheres[2].y = lerp(spheres[2].y, -150, 0.05);
+    // According to the viewport size
+    const monitorTargets = [
+      { x: -500, y: -150 },
+      { x: -300, y: -250 },
+      { x: -100, y: -300 },
+      { x: 100, y: -300 },
+      { x: 300, y: -250 },
+      { x: 500, y: -150 },
+    ];
+    const laptopTargets = [
+      { x: -375, y: -112.5 },
+      { x: -225, y: -187.5 },
+      { x: -75, y: -225 },
+      { x: 75, y: -225 },
+      { x: 225, y: -187.5 },
+      { x: 375, y: -112.5 },
+    ];
+    const mobileTargets = [
+      { x: -(window.innerWidth / 4), y: -(window.innerHeight / 4) },
+      { x: -(window.innerWidth / 4), y: 0 },
+      { x: -(window.innerWidth / 4), y: window.innerHeight / 4 },
+      { x: window.innerWidth / 4, y: window.innerHeight / 4 },
+      { x: window.innerWidth / 4, y: 0 },
+      { x: window.innerWidth / 4, y: -(window.innerHeight / 4) },
+    ];
 
-    spheres[3].x = lerp(spheres[3].x, -300, 0.05);
-    spheres[3].y = lerp(spheres[3].y, -250, 0.05);
+    let currentTargets = [];
 
-    spheres[4].x = lerp(spheres[4].x, -100, 0.05);
-    spheres[4].y = lerp(spheres[4].y, -300, 0.05);
+    if (window.innerWidth >= 1200) {
+      currentTargets = monitorTargets;
+    } else if (window.innerWidth < 1200 && window.innerWidth >= 600) {
+      currentTargets = laptopTargets;
+    } else {
+      currentTargets = mobileTargets;
+    }
 
-    spheres[5].x = lerp(spheres[5].x, 100, 0.05);
-    spheres[5].y = lerp(spheres[5].y, -300, 0.05);
+    spheres[2].x = lerp(spheres[2].x, currentTargets[0].x, 0.05);
+    spheres[2].y = lerp(spheres[2].y, currentTargets[0].y, 0.05);
 
-    spheres[6].x = lerp(spheres[6].x, 300, 0.05);
-    spheres[6].y = lerp(spheres[6].y, -250, 0.05);
+    spheres[3].x = lerp(spheres[3].x, currentTargets[1].x, 0.05);
+    spheres[3].y = lerp(spheres[3].y, currentTargets[1].y, 0.05);
 
-    spheres[7].x = lerp(spheres[7].x, 500, 0.05);
-    spheres[7].y = lerp(spheres[7].y, -150, 0.05);
+    spheres[4].x = lerp(spheres[4].x, currentTargets[2].x, 0.05);
+    spheres[4].y = lerp(spheres[4].y, currentTargets[2].y, 0.05);
+
+    spheres[5].x = lerp(spheres[5].x, currentTargets[3].x, 0.05);
+    spheres[5].y = lerp(spheres[5].y, currentTargets[3].y, 0.05);
+
+    spheres[6].x = lerp(spheres[6].x, currentTargets[4].x, 0.05);
+    spheres[6].y = lerp(spheres[6].y, currentTargets[4].y, 0.05);
+
+    spheres[7].x = lerp(spheres[7].x, currentTargets[5].x, 0.05);
+    spheres[7].y = lerp(spheres[7].y, currentTargets[5].y, 0.05);
   }
 
   for (let sphere of visibleSpheres) {
-
     if (sphere.isExiting) {
       // Continue moving the sphere upwards off-screen
       sphere.y = lerp(sphere.y, -1000, 0.05);
-    }  else if (sphere.isOrbiting) {
+    } else if (sphere.isOrbiting) {
       const angleSpeed = 0.05; // Slower speed
       const time = frameCount * angleSpeed;
-      sphere.y = sphere.orbitCenter.y + sin(time + PI) * 15; 
+      sphere.y = sphere.orbitCenter.y + sin(time + PI) * 15;
       const el = domContainerMapping(sphere.id);
       if (el && !hoverLock) {
         el.style.visibility = "visible";
