@@ -223,7 +223,7 @@ function draw() {
     }  else if (sphere.isOrbiting) {
       const angleSpeed = 0.05; // Slower speed
       const time = frameCount * angleSpeed;
-      sphere.y = sphere.orbitCenter.y + sin(time) * 15;
+      sphere.y = sphere.orbitCenter.y + sin(time + PI) * 15; 
       const el = domContainerMapping(sphere.id);
       if (el && !hoverLock) {
         el.style.visibility = "visible";
