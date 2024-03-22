@@ -6,6 +6,16 @@ let currentHoveredSphereId = null;
 let hoverLock = true;
 let firstTimeScatter = true;
 let firstScatterClick = true;
+let VIEWPORT = '';
+
+if (window.innerWidth > 1440) {
+  VIEWPORT = 'monitor'
+} else if (window.innerWidth <= 1440 && window.innerWidth >= 600) {
+  VIEWPORT = 'laptop'
+} else {
+  VIEWPORT = 'mobile'
+}
+
 const phases = ["FLOATING", "ECLIPSE", "SCATTER", "REDIRECT"];
 const hiddenContent = document.getElementById("hidden-content");
 
@@ -191,7 +201,9 @@ function draw() {
       hoverLock = true;
       firstTimeScatter = false;
       setTimeout(() => {
-        hoverLock = false;
+        if (!(VIEWPORT === 'mobile')) {
+          hoverLock = false;
+        }
       }, 500);
     }
     visibleSpheres = spheres.slice(2, 8);
@@ -224,9 +236,9 @@ function draw() {
 
     let currentTargets = [];
 
-    if (window.innerWidth >= 1200) {
+    if (VIEWPORT === 'monitor') {
       currentTargets = monitorTargets;
-    } else if (window.innerWidth < 1200 && window.innerWidth >= 600) {
+    } else if (VIEWPORT === 'laptop') {
       currentTargets = laptopTargets;
     } else {
       currentTargets = mobileTargets;
@@ -253,20 +265,16 @@ function draw() {
 
   for (let sphere of visibleSpheres) {
     if (sphere.isExiting) {
-      // Continue moving the sphere upwards off-screen
       sphere.y = lerp(sphere.y, -1000, 0.05);
     } else if (sphere.isOrbiting) {
       const angleSpeed = 0.05; // Slower speed
       const time = frameCount * angleSpeed;
       sphere.y = sphere.orbitCenter.y + sin(time + PI) * 15;
       const el = domContainerMapping(sphere.id);
-      if (el && !hoverLock) {
+      if (el) {
         el.style.visibility = "visible";
         el.style.opacity = 1;
       }
-    } else if (phases[currentPhase] === "SCATTER") {
-      // SCATTER phase specific positioning logic here
-      // This is where your existing SCATTER logic applies if the sphere is not exiting
     }
 
     let d = dist(mouseX - width / 2, mouseY - height / 2, sphere.x, sphere.y);

@@ -23,10 +23,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  text-wrap: nowrap;
 }
 
 .header .element.logo {
   justify-content: flex-start;
+  font-weight: 700;
 }
 
 .header .element.menu {
@@ -38,3 +40,5 @@
   height: 40px;
   margin-bottom: 2rem;
 }
+
+/* @media (max-width: 600px) {} */
