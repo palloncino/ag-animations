@@ -6,14 +6,14 @@ let currentHoveredSphereId = null;
 let hoverLock = true;
 let firstTimeScatter = true;
 let firstScatterClick = true;
-let VIEWPORT = '';
+let VIEWPORT = "";
 
 if (window.innerWidth > 1440) {
-  VIEWPORT = 'monitor'
+  VIEWPORT = "monitor";
 } else if (window.innerWidth <= 1440 && window.innerWidth >= 600) {
-  VIEWPORT = 'laptop'
+  VIEWPORT = "laptop";
 } else {
-  VIEWPORT = 'mobile'
+  VIEWPORT = "mobile";
 }
 
 const phases = ["FLOATING", "ECLIPSE", "SCATTER", "REDIRECT"];
@@ -105,10 +105,16 @@ function setup() {
 
 function exitSceneAndRedirect(_sphere) {
   let keeper;
-  spheres.slice(2, 8).filter((sphere) => {
+
+  // Reset the position of the first sphere and ensure it is visible
+  spheres[0].x = -200; // Set the x position to -200
+  spheres[0].y = -200; // Set the y position to -200
+  spheres[0].isExiting = false; // Ensure it is not marked as exiting
+
+  // Now, handle the rest of the spheres for exiting or keeping
+  spheres.slice(2, 8).forEach((sphere) => {
     if (sphere.id !== _sphere.id) {
       sphere.isExiting = true; // Mark the sphere as exiting
-      return true;
     } else {
       keeper = sphere; // Keep the selected sphere
       keeper.isOrbiting = true;
@@ -201,7 +207,7 @@ function draw() {
       hoverLock = true;
       firstTimeScatter = false;
       setTimeout(() => {
-        if (!(VIEWPORT === 'mobile')) {
+        if (!(VIEWPORT === "mobile")) {
           hoverLock = false;
         }
       }, 500);
@@ -236,9 +242,9 @@ function draw() {
 
     let currentTargets = [];
 
-    if (VIEWPORT === 'monitor') {
+    if (VIEWPORT === "monitor") {
       currentTargets = monitorTargets;
-    } else if (VIEWPORT === 'laptop') {
+    } else if (VIEWPORT === "laptop") {
       currentTargets = laptopTargets;
     } else {
       currentTargets = mobileTargets;
@@ -267,9 +273,16 @@ function draw() {
     if (sphere.isExiting) {
       sphere.y = lerp(sphere.y, -1000, 0.05);
     } else if (sphere.isOrbiting) {
-      const angleSpeed = 0.05; // Slower speed
-      const time = frameCount * angleSpeed;
-      sphere.y = sphere.orbitCenter.y + sin(time + PI) * 15;
+
+      sphere.x = lerp(sphere.x, 25, 0.05);
+      sphere.x = lerp(sphere.x, 0, 0.05);
+
+      spheres[0].x = lerp(spheres[0].x, -25, 0.05);
+      spheres[0].y = lerp(spheres[0].y, 0, 0.05);
+
+      fill(spheres[0].color);
+      ellipse(spheres[0].x, spheres[0].y, spheres[0].currentSize);
+
       const el = domContainerMapping(sphere.id);
       if (el) {
         el.style.visibility = "visible";
