@@ -10,6 +10,7 @@ let VIEWPORT = "";
 let currentTargets = [];
 let endAnimationHeightMeasurement;
 let endAnimation = false;
+let disabledPress = false;
 
 if (window.innerWidth > 1440) {
   VIEWPORT = "monitor";
@@ -131,6 +132,9 @@ function exitSceneAndRedirect(_sphere) {
 }
 
 function mousePressed() {
+  if (disabledPress) {
+    return;
+  }
   // Ensure this logic only applies during the "ECLIPSE" phase
   if (phases[currentPhase] === "ECLIPSE") {
     if (hoverLock) {
@@ -281,8 +285,8 @@ function draw() {
     if (sphere.isExiting) {
       sphere.y = lerp(sphere.y, -1000, 0.05);
     } else if (sphere.isOrbiting) {
-      sphere.x = lerp(sphere.x, 20, .1);
-      sphere.y = lerp(sphere.y, endAnimationHeightMeasurement, .1);
+      sphere.x = lerp(sphere.x, 20, 0.1);
+      sphere.y = lerp(sphere.y, endAnimationHeightMeasurement, 0.1);
 
       const el = domContainerMapping(sphere.id);
       if (el) {
@@ -308,13 +312,18 @@ function draw() {
     ellipse(sphere.x, sphere.y, sphere.currentSize);
 
     if (endAnimation) {
-      // hoverLock = true;
-      console.log(spheres[0].x, spheres[0].y)
-      spheres[0].x = lerp(spheres[0].x, -10, .02);
-      spheres[0].y = lerp(spheres[0].y, endAnimationHeightMeasurement - 30, .02);
+      hoverLock = true;
+      spheres[0].x = lerp(spheres[0].x, -10, 0.02);
+      spheres[0].y = lerp(spheres[0].y, endAnimationHeightMeasurement - 30, 0.02);
 
       fill(spheres[0].color);
       ellipse(spheres[0].x, spheres[0].y, spheres[0].currentSize);
+
+      if (sphere.isOrbiting) {
+        sphere.currentSize = 80;
+      }
+
+      disabledPress = true;
     }
 
     // Displaying text on each sphere, if it has text
