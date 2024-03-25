@@ -118,7 +118,7 @@ function exitSceneAndRedirect(_sphere) {
   spheres[0].x = -400; // Set the x position to -200
   spheres[0].y = -400; // Set the y position to -200
   spheres[0].isExiting = false; // Ensure it is not marked as exiting
-  spheres[0].currentSize = 80; // Ensure it is not marked as exiting
+  spheres[0].currentSize = 120; // Ensure it is not marked as exiting
 
   // Now, handle the rest of the spheres for exiting or keeping
   spheres.slice(2, 8).forEach((sphere) => {
@@ -300,7 +300,7 @@ function draw() {
     }
 
     fill(sphere.color);
-    ellipse(sphere.x, sphere.y, sphere.currentSize);
+    ellipse(sphere.x, sphere.y, sphere.isLastOrange ? 120 : sphere.currentSize);
 
     if (endAnimation) {
       hoverLock = true;
