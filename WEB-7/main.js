@@ -384,18 +384,31 @@ function drawCurvedText(sphere) {
   let textSizeVariable = 16; // Adjustable text size
   textSize(textSizeVariable);
 
-  // Calculate the circumference of the circle where text is placed
-  let circumference = TWO_PI * radius;
-  
-  // Start at the top and calculate angles based on character widths
-  let currentAngleDegrees = -90; // Start from the top center
+  let circumference = TWO_PI * radius; // Circle circumference where text is placed
 
+  // Function to calculate the angle degree occupied by each character
+  function charAngleDegrees(charWidth, circumference) {
+    return (charWidth / circumference) * 360; // Angle in degrees
+  }
+
+  // Calculate total angle occupied by the text
+  let totalTextAngle = 0;
+  for (let char of sphere.text) {
+    let charWidth = textWidth(char); // Get width in pixels
+    totalTextAngle += charAngleDegrees(charWidth, circumference); // Sum angles
+  }
+
+  // Calculate the starting angle to center the text at the top of the sphere
+  let startAngleDegrees = -90 - (totalTextAngle / 2);
+
+  let currentAngleDegrees = startAngleDegrees;
   for (let i = 0; i < sphere.text.length; i++) {
-    let charWidth = textWidth(sphere.text[i]); // Get width of the character in pixels
-    let charAngleDegrees = (charWidth / circumference) * 360; // Calculate angle occupied by the character
+    let char = sphere.text[i];
+    let charWidth = textWidth(char);
+    let charAngle = charAngleDegrees(charWidth, circumference);
 
-    // Calculate position for the character
-    let angle = radians(currentAngleDegrees + charAngleDegrees / 2); // Center character in its angle range
+    // Position for each character
+    let angle = radians(currentAngleDegrees + (charAngle / 2)); // Center character in its allocated angle
     let x = sphere.x + cos(angle) * radius;
     let y = sphere.y + sin(angle) * radius;
 
@@ -405,13 +418,14 @@ function drawCurvedText(sphere) {
     fill(0); // Text color
     noStroke();
     textAlign(CENTER, CENTER);
-    text(sphere.text[i], 0, 0); // Draw the character
+    text(char, 0, 0); // Draw the character
     pop();
 
-    // Update the angle for the next character
-    currentAngleDegrees += charAngleDegrees;
+    // Update the current angle for the next character
+    currentAngleDegrees += charAngle;
   }
 }
+
 
 
 
