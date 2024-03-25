@@ -7,6 +7,9 @@ let hoverLock = true;
 let firstTimeScatter = true;
 let firstScatterClick = true;
 let VIEWPORT = "";
+let currentTargets = [];
+let endAnimationHeightMeasurement;
+let endAnimation = false;
 
 if (window.innerWidth > 1440) {
   VIEWPORT = "monitor";
@@ -104,12 +107,16 @@ function setup() {
 }
 
 function exitSceneAndRedirect(_sphere) {
+  endAnimation = true;
   let keeper;
+
+  // _sphere.currentSize = 120;
 
   // Reset the position of the first sphere and ensure it is visible
   spheres[0].x = -200; // Set the x position to -200
   spheres[0].y = -200; // Set the y position to -200
   spheres[0].isExiting = false; // Ensure it is not marked as exiting
+  spheres[0].currentSize = 80; // Ensure it is not marked as exiting
 
   // Now, handle the rest of the spheres for exiting or keeping
   spheres.slice(2, 8).forEach((sphere) => {
@@ -240,13 +247,14 @@ function draw() {
       { x: window.innerWidth / 4, y: -(window.innerHeight / 4) },
     ];
 
-    let currentTargets = [];
-
     if (VIEWPORT === "monitor") {
       currentTargets = monitorTargets;
+      endAnimationHeightMeasurement = -250;
     } else if (VIEWPORT === "laptop") {
+      endAnimationHeightMeasurement = -187.5;
       currentTargets = laptopTargets;
     } else {
+      endAnimationHeightMeasurement = 0;
       currentTargets = mobileTargets;
     }
 
@@ -273,15 +281,8 @@ function draw() {
     if (sphere.isExiting) {
       sphere.y = lerp(sphere.y, -1000, 0.05);
     } else if (sphere.isOrbiting) {
-
-      sphere.x = lerp(sphere.x, 25, 0.05);
-      sphere.x = lerp(sphere.x, 0, 0.05);
-
-      spheres[0].x = lerp(spheres[0].x, -25, 0.05);
-      spheres[0].y = lerp(spheres[0].y, 0, 0.05);
-
-      fill(spheres[0].color);
-      ellipse(spheres[0].x, spheres[0].y, spheres[0].currentSize);
+      sphere.x = lerp(sphere.x, 20, 1);
+      sphere.y = lerp(sphere.y, endAnimationHeightMeasurement, 1);
 
       const el = domContainerMapping(sphere.id);
       if (el) {
@@ -305,6 +306,14 @@ function draw() {
 
     fill(sphere.color);
     ellipse(sphere.x, sphere.y, sphere.currentSize);
+
+    if (endAnimation) {
+      spheres[0].x = lerp(spheres[0].x, -10, .5);
+      spheres[0].y = lerp(spheres[0].y, endAnimationHeightMeasurement - 20, .5);
+
+      fill(spheres[0].color);
+      ellipse(spheres[0].x, spheres[0].y, spheres[0].currentSize);
+    }
 
     // Displaying text on each sphere, if it has text
     if (sphere.text && !sphere.isExiting && !sphere.isOrbiting) {
