@@ -11,6 +11,8 @@ let currentTargets = [];
 let endAnimationHeightMeasurement;
 let endAnimation = false;
 let disabledPress = false;
+let timestampEndingAnimation;
+let durationEndingAnimation = 2000;
 
 if (window.innerWidth > 1440) {
   VIEWPORT = "monitor";
@@ -109,9 +111,8 @@ function setup() {
 
 function exitSceneAndRedirect(_sphere) {
   endAnimation = true;
+  timestampEndingAnimation = millis();
   let keeper;
-
-  // _sphere.currentSize = 120;
 
   // Reset the position of the first sphere and ensure it is visible
   spheres[0].x = -400; // Set the x position to -200
@@ -125,8 +126,7 @@ function exitSceneAndRedirect(_sphere) {
       sphere.isExiting = true; // Mark the sphere as exiting
     } else {
       keeper = sphere; // Keep the selected sphere
-      keeper.isOrbiting = true;
-      keeper.orbitCenter = { x: keeper.x, y: keeper.y };
+      keeper.isLastOrange = true;
     }
   });
 }
@@ -162,12 +162,6 @@ function mousePressed() {
   }
 }
 
-function applyOrbitalBehavior(sphere, orbitCenter, majorAxis, minorAxis, frameOffset, clockwise = true) {
-  const directionMultiplier = clockwise ? 1 : -1;
-  const angle = (frameCount + frameOffset) * 0.02 * directionMultiplier;
-  sphere.x = orbitCenter.x + cos(angle) * majorAxis;
-  sphere.y = orbitCenter.y + sin(angle) * minorAxis;
-}
 
 function draw() {
   background("#F0EBE6");
@@ -285,9 +279,6 @@ function draw() {
     if (sphere.isExiting) {
       sphere.y = lerp(sphere.y, -1000, 0.05);
     } else if (sphere.isOrbiting) {
-      sphere.x = lerp(sphere.x, 20, .1);
-      sphere.y = lerp(sphere.y, endAnimationHeightMeasurement, .1);
-
       const el = domContainerMapping(sphere.id);
       if (el) {
         el.style.visibility = "visible";
@@ -313,13 +304,27 @@ function draw() {
 
     if (endAnimation) {
       hoverLock = true;
-      spheres[0].x = lerp(spheres[0].x, -10, 0.02);
-      spheres[0].y = lerp(spheres[0].y, endAnimationHeightMeasurement - 30, 0.02);
+
+      let elapsedTime = millis() - timestampEndingAnimation;
+      let t = elapsedTime / durationEndingAnimation; // Calculate the normalized time elapsed
+
+      if (t >= 1) {
+        t = 1;
+        animating = false; // Stop the animation when the duration is reached or exceeded
+      }
+
+      spheres[0].x = lerp(-200, -10, t);
+      spheres[0].y = lerp(-200, endAnimationHeightMeasurement - 30, t);
+
+      if (sphere.isLastOrange) {
+        sphere.x = lerp(sphere.x, 20, t);
+        sphere.y = lerp(sphere.y, endAnimationHeightMeasurement, t);
+      }
 
       fill(spheres[0].color);
       ellipse(spheres[0].x, spheres[0].y, spheres[0].currentSize);
 
-      if (sphere.isOrbiting) {
+      if (sphere.isLastOrange) {
         sphere.currentSize = 80;
       }
 
@@ -327,7 +332,7 @@ function draw() {
     }
 
     // Displaying text on each sphere, if it has text
-    if (sphere.text && !sphere.isExiting && !sphere.isOrbiting) {
+    if (sphere.text && !sphere.isExiting && !sphere.isLastOrange) {
       drawCurvedText(sphere);
     }
   }
@@ -393,7 +398,7 @@ function drawCurvedText(sphere) {
   }
 
   // Calculate the starting angle to center the text at the top of the sphere
-  let startAngleDegrees = -90 - (totalTextAngle / 2);
+  let startAngleDegrees = -90 - totalTextAngle / 2;
 
   let currentAngleDegrees = startAngleDegrees;
   for (let i = 0; i < sphere.text.length; i++) {
@@ -402,7 +407,7 @@ function drawCurvedText(sphere) {
     let charAngle = charAngleDegrees(charWidth, circumference);
 
     // Position for each character
-    let angle = radians(currentAngleDegrees + (charAngle / 2)); // Center character in its allocated angle
+    let angle = radians(currentAngleDegrees + charAngle / 2); // Center character in its allocated angle
     let x = sphere.x + cos(angle) * radius;
     let y = sphere.y + sin(angle) * radius;
 
@@ -419,9 +424,3 @@ function drawCurvedText(sphere) {
     currentAngleDegrees += charAngle;
   }
 }
-
-
-
-
-
-
