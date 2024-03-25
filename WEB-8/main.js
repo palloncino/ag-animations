@@ -1,6 +1,6 @@
 let spheres = [
-  { x: -100, y: 0, size: 80, currentSize: 80, targetSize: 80, color: "#000", text: "Web Development" },
-  { x: 100, y: 0, size: 80, currentSize: 80, targetSize: 80, color: "#000", text: "Design" }
+  { x: -100, y: 0, size: 80, currentSize: 80, targetSize: 80, color: "red", text: "Web Development" },
+  { x: 100, y: 0, size: 80, currentSize: 80, targetSize: 80, color: "yellow", text: "Design" }
 ];
 
 function setup() {
@@ -10,7 +10,7 @@ function setup() {
 }
 
 function draw() {
-  background(220);
+  background(180);
   translate(width / 2, height / 2); // Adjust canvas drawing origin to the center
 
   spheres.forEach(sphere => {
@@ -46,7 +46,7 @@ function drawCurvedText(sphere) {
     push(); // Saving the current state
     translate(x, y); // Translating to character position
     rotate(angle + 90); // Rotating character for upright orientation
-    fill(255); // Text color (change if needed)
+    fill(0); // Text color (change if needed)
     noStroke();
     text(sphere.text[i], 0, 0); // Drawing character
     pop(); // Restoring previous state
