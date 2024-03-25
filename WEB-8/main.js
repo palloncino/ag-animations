@@ -1,42 +1,54 @@
+let spheres = [
+  { x: -100, y: 0, size: 80, currentSize: 80, targetSize: 80, color: "#000", text: "Web Development" },
+  { x: 100, y: 0, size: 80, currentSize: 80, targetSize: 80, color: "#000", text: "Design" }
+];
+
 function setup() {
-  createCanvas(400, 400);
+  createCanvas(600, 400);
   textAlign(CENTER, CENTER);
   angleMode(DEGREES);
 }
 
 function draw() {
   background(220);
-  let circleDiameter = 100;
-  let circleX = width / 2;
-  let circleY = height / 2;
+  translate(width / 2, height / 2); // Adjust canvas drawing origin to the center
 
-  // Draw the circle
-  ellipse(circleX, circleY, circleDiameter);
+  spheres.forEach(sphere => {
+    drawSphereWithText(sphere);
+  });
+}
 
-  // Your text
-  let textStr = "Web development";
-  let radius = circleDiameter / 2 + 20; // Adjust for text to appear above the circle
+function drawSphereWithText(sphere) {
+  // Draw the sphere
+  fill(sphere.color);
+  noStroke();
+  ellipse(sphere.x, sphere.y, sphere.size);
+
+  // Draw the curved text
+  drawCurvedText(sphere);
+}
+
+function drawCurvedText(sphere) {
+  let radius = sphere.size / 2 + 20; // Adjusting to place text above the sphere
+  let spacing = 8; // Default spacing, adjust if necessary
   
-  // Fixed spacing between characters
-  let spacing = 8;
-
-  // Calculate the total angle covered by the text
-  let totalAngle = (textStr.length - 1) * spacing;
-
-  // Starting angle adjustment to move text to visual "top center" of the circle for the viewer
-  // This places the center of the text at -90 degrees (the geometric 'left' of the circle, which appears as the top center to viewers)
+  // Adjusting the spacing based on the text length if needed
+  let totalAngle = (sphere.text.length - 1) * spacing;
+  
+  // Calculate starting angle to center text
   let startAngle = -90 - (totalAngle / 2);
 
-  // Draw each character
-  for (let i = 0; i < textStr.length; i++) {
+  for (let i = 0; i < sphere.text.length; i++) {
     let angle = startAngle + (i * spacing);
-    let x = circleX + cos(angle) * radius;
-    let y = circleY + sin(angle) * radius;
-
-    push();
-    translate(x, y);
-    rotate(angle + 90); // Adjust rotation for text orientation
-    text(textStr[i], 0, 0);
-    pop();
+    let x = cos(angle) * radius + sphere.x;
+    let y = sin(angle) * radius + sphere.y;
+    
+    push(); // Saving the current state
+    translate(x, y); // Translating to character position
+    rotate(angle + 90); // Rotating character for upright orientation
+    fill(255); // Text color (change if needed)
+    noStroke();
+    text(sphere.text[i], 0, 0); // Drawing character
+    pop(); // Restoring previous state
   }
 }

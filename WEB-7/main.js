@@ -328,11 +328,13 @@ function draw() {
 
     // Displaying text on each sphere, if it has text
     if (sphere.text && !sphere.isExiting && !sphere.isOrbiting) {
-      fill(0); // Text color
-      noStroke();
-      textAlign(CENTER, CENTER);
-      textSize(16);
-      text(sphere.text, sphere.x, sphere.y);
+      // fill(0); // Text color
+      // noStroke();
+      // textAlign(CENTER, CENTER);
+      // textSize(16);
+      // text(sphere.text, sphere.x, sphere.y);
+
+      drawCurvedText(sphere);
     }
   }
 
@@ -376,3 +378,33 @@ function checkSphereClicked() {
   }
   return null; // No sphere was clicked
 }
+
+function drawCurvedText(sphere) {
+  let radius = sphere.currentSize / 2 + 20; // The distance from the sphere's center to place the text
+  
+  // Fixed angular spacing between characters in degrees
+  let fixedSpacing = 10; // This can be adjusted to increase or decrease the distance between characters
+  
+  // Calculate the total angle the text will occupy
+  let totalTextAngle = (sphere.text.length - 1) * fixedSpacing;
+  
+  // Calculate the starting angle to center the text on the upper half of the sphere
+  let startAngle = -90 - (totalTextAngle / 2);
+  
+  for (let i = 0; i < sphere.text.length; i++) {
+    // Calculate the angle for each character
+    let angle = radians(startAngle + (i * fixedSpacing));
+    let x = sphere.x + cos(angle) * radius; // Calculating x position
+    let y = sphere.y + sin(angle) * radius; // Calculating y position
+    
+    push(); // Save current drawing state
+    translate(x, y); // Move to the calculated position
+    rotate(angle + HALF_PI); // Rotate the character to face outwards from the sphere
+    fill(0); // Set text color
+    noStroke();
+    textAlign(CENTER, CENTER);
+    text(sphere.text[i], 0, 0); // Draw each character
+    pop(); // Restore previous drawing state
+  }
+}
+
