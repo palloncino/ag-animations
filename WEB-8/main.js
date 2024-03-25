@@ -1,6 +1,6 @@
 let spheres = [
-  { x: -100, y: 0, size: 80, currentSize: 80, targetSize: 80, color: "red", text: "Web Development" },
-  { x: 100, y: 0, size: 80, currentSize: 80, targetSize: 80, color: "yellow", text: "Design" }
+  { x: -100, y: 0, size: 80, currentSize: 80, targetSize: 80, color: "orange", text: "Web Development" },
+  { x: 100, y: 0, size: 80, currentSize: 80, targetSize: 80, color: "black", text: "Design" }
 ];
 
 function setup() {
@@ -10,7 +10,7 @@ function setup() {
 }
 
 function draw() {
-  background(180);
+  background('#F0EBE6');
   translate(width / 2, height / 2); // Adjust canvas drawing origin to the center
 
   spheres.forEach(sphere => {

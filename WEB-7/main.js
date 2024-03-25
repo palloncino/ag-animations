@@ -285,8 +285,8 @@ function draw() {
     if (sphere.isExiting) {
       sphere.y = lerp(sphere.y, -1000, 0.05);
     } else if (sphere.isOrbiting) {
-      sphere.x = lerp(sphere.x, 20, 0.1);
-      sphere.y = lerp(sphere.y, endAnimationHeightMeasurement, 0.1);
+      sphere.x = lerp(sphere.x, 20, .1);
+      sphere.y = lerp(sphere.y, endAnimationHeightMeasurement, .1);
 
       const el = domContainerMapping(sphere.id);
       if (el) {
@@ -328,12 +328,6 @@ function draw() {
 
     // Displaying text on each sphere, if it has text
     if (sphere.text && !sphere.isExiting && !sphere.isOrbiting) {
-      // fill(0); // Text color
-      // noStroke();
-      // textAlign(CENTER, CENTER);
-      // textSize(16);
-      // text(sphere.text, sphere.x, sphere.y);
-
       drawCurvedText(sphere);
     }
   }

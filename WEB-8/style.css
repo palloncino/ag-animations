@@ -5,3 +5,8 @@ body {
   justify-content: center;
   height: 100vh;
 }
+
+canvas {
+  border-radius: 1em;
+  border: 10px solid;
+}
