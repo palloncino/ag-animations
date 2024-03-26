@@ -1,4 +1,5 @@
 let spheres = [];
+let routeSelected = false;
 let currentPhase = 0;
 let scaleTimerStarted = false;
 let scaleTimer = 0;
@@ -23,8 +24,8 @@ if (window.innerWidth > 1440) {
 }
 
 const phases = ["FLOATING", "ECLIPSE", "SCATTER", "REDIRECT"];
-const hiddenContent = document.getElementById("hidden-content");
 
+const CbgTextHeading = document.getElementById("cbg_text_heading");
 const art_direction_container = document.getElementById("art_direction");
 const design_container = document.getElementById("design");
 const visual_art_container = document.getElementById("visual_art");
@@ -118,7 +119,7 @@ function exitSceneAndRedirect(_sphere) {
   spheres[0].x = -400; // Set the x position to -200
   spheres[0].y = -400; // Set the y position to -200
   spheres[0].isExiting = false; // Ensure it is not marked as exiting
-  spheres[0].currentSize = 120; // Ensure it is not marked as exiting
+  spheres[0].currentSize = 80; // Ensure it is not marked as exiting
 
   // Now, handle the rest of the spheres for exiting or keeping
   spheres.slice(2, 8).forEach((sphere) => {
@@ -300,7 +301,7 @@ function draw() {
     }
 
     fill(sphere.color);
-    ellipse(sphere.x, sphere.y, sphere.isLastOrange ? 120 : sphere.currentSize);
+    ellipse(sphere.x, sphere.y, sphere.currentSize);
 
     if (endAnimation) {
       hoverLock = true;
@@ -311,22 +312,23 @@ function draw() {
       if (t >= 1) {
         t = 1;
         animating = false; // Stop the animation when the duration is reached or exceeded
+        CbgTextHeading.style.visibility = 'visible';
+        CbgTextHeading.style.opacity = 1;
       }
 
-      spheres[0].x = lerp(-200, -10, t);
-      spheres[0].y = lerp(-200, endAnimationHeightMeasurement - 30, t);
+      let easedT = easeOutQuad(t);
+
+      spheres[0].x = lerp(-200, -10, easedT);
+      spheres[0].y = lerp(-200, endAnimationHeightMeasurement - 30, easedT);
 
       if (sphere.isLastOrange) {
         sphere.x = lerp(sphere.x, 20, t);
         sphere.y = lerp(sphere.y, endAnimationHeightMeasurement, t);
+        sphere.currentSize = 80;
       }
 
       fill(spheres[0].color);
       ellipse(spheres[0].x, spheres[0].y, spheres[0].currentSize);
-
-      if (sphere.isLastOrange) {
-        sphere.currentSize = 80;
-      }
 
       disabledPress = true;
     }
@@ -423,4 +425,8 @@ function drawCurvedText(sphere) {
     // Update the current angle for the next character
     currentAngleDegrees += charAngle;
   }
+}
+
+function easeOutQuad(t) {
+  return 1 - (1 - t) * (1 - t);
 }

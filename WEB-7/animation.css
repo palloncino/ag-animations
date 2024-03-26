@@ -36,12 +36,38 @@
 
 .content-container h1 {
   margin: 0 0 1rem 0;
-  font-size: 4rem;  
+  font-size: 4rem;
 }
+
 .content-container p {
   margin: 0;
-  font-size: 1.4rem;  
+  font-size: 1.4rem;
   line-height: 160%;
+}
+
+#cbg_text_heading {
+  /* text-align: center; */
+  display: flex;
+  flex-direction: column;
+  font-family: Custom;
+  position: absolute;
+  z-index: 200;
+  top: 250px;
+  left: calc(50% - 4rem);
+  transform: translateX(-50%);
+  transition: 1s;
+
+  visibility: hidden;
+  opacity: 0;
+}
+
+#cbg_text_heading h1 {
+  margin: 0;
+  font-size: 2.6rem;
+}
+
+#cbg_text_heading h3 {
+  margin: 0;
 }
 
 @media (max-width: 600px) {
@@ -50,7 +76,8 @@
     width: 100%;
     margin: 0 auto;
   }
+
   .content-container h1 {
-    font-size: 3rem;  
+    font-size: 3rem;
   }
 }
