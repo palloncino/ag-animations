@@ -46,7 +46,6 @@
 }
 
 #cbg_text_heading {
-  /* text-align: center; */
   display: flex;
   flex-direction: column;
   font-family: Custom;
@@ -71,6 +70,10 @@
 }
 
 @media (max-width: 600px) {
+  #cbg_text_heading {
+    left: 50%;
+  }
+
   .content-container {
     max-width: calc(100% - 2rem);
     width: 100%;

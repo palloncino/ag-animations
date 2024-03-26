@@ -253,7 +253,7 @@ function draw() {
       endAnimationHeightMeasurement = -187.5;
       currentTargets = laptopTargets;
     } else {
-      endAnimationHeightMeasurement = 0;
+      endAnimationHeightMeasurement = -140;
       currentTargets = mobileTargets;
     }
 
