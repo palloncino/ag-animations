@@ -14,6 +14,7 @@ let endAnimation = false;
 let disabledPress = false;
 let timestampEndingAnimation;
 let durationEndingAnimation = 2000;
+let bgColor = '#F0EBE6';
 
 if (window.innerWidth > 1440) {
   VIEWPORT = "monitor";
@@ -62,8 +63,8 @@ function setup() {
   let p5Canvas = createCanvas(windowWidth, windowHeight);
   p5Canvas.id("p5Canvas");
   spheres = [
-    { x: -300, y: 100, size: 80, currentSize: 80, targetSize: 80, color: "#000", text: "" },
-    { x: 300, y: -100, size: 80, currentSize: 80, targetSize: 80, color: "#F79B00", text: "" },
+    { x: -300, y: 100, size: 80, currentSize: 80, targetSize: 80, color: "#F79B00", text: "" },
+    { x: 300, y: -100, size: 80, currentSize: 80, targetSize: 80, color: "#000", text: "" },
     {
       x: 0,
       y: 0,
@@ -120,6 +121,7 @@ function exitSceneAndRedirect(_sphere) {
   spheres[0].y = -400; // Set the y position to -200
   spheres[0].isExiting = false; // Ensure it is not marked as exiting
   spheres[0].currentSize = 80; // Ensure it is not marked as exiting
+  spheres[0].color = '#000000';
 
   // Now, handle the rest of the spheres for exiting or keeping
   spheres.slice(2, 8).forEach((sphere) => {
@@ -165,7 +167,7 @@ function mousePressed() {
 
 
 function draw() {
-  background("#F0EBE6");
+  background(bgColor);
   translate(width / 2, height / 2);
 
   let isHoveringAnySphere = false;
@@ -206,9 +208,24 @@ function draw() {
       spheres[0].currentSize = lerp(spheres[0].currentSize, 120, 0.05);
       hoverLock = false;
     }
+
+    // Calculate normalized distance between the spheres
+    let distance = dist(spheres[0].x, spheres[0].y, spheres[1].x, spheres[1].y);
+    let maxDistance = sqrt(width * width + height * height); // Max possible distance on screen
+    let normalizedDistance = map(distance, 0, maxDistance, 1, 0);
+
+    // Lerp background color based on normalized distance
+    bgColor = lerpColor(color('#F0EBE6'), color('#000000'), normalizedDistance);
+
+    // Make sure the background is fully black when spheres overlap
+    if (distance < 1) {
+      bgColor = '#000000';
+    }
   }
 
   if (phases[currentPhase] === "SCATTER") {
+    bgColor = lerpColor(color(bgColor), color('#F0EBE6'), 0.1);
+
     if (!hoverLock && firstTimeScatter) {
       hoverLock = true;
       firstTimeScatter = false;
