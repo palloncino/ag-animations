@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #cbg_text_heading {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-end;
+        font-family: Custom;
+        position: absolute;
+        z-index: 200;
+        top: 250px;
+        background: #00000020;
+        left: calc(50% - 4rem);
+        transform: translateX(-50%);
+        transition: 1s;
+        width: 200px;
+        height: 200px;
+      }
+
+      #cbg_text_heading .orange-sphere {
+        background: #f79b00;
+        height: 80px;
+        width: 80px;
+        border-radius: 100%;
+        position: absolute;
+        top: 0;
+      }
+
+      #cbg_text_heading .black-sphere {
+        position: absolute;
+        background: #000;
+        height: 80px;
+        width: 80px;
+        border-radius: 100%;
+      }
+
+      #cbg_text_heading h1 {
+        margin: 0;
+        font-size: 2.6rem;
+      }
+
+      #cbg_text_heading h3 {
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="cbg_text_heading">
+      <div style="position: relative">
+        <span class="orange-sphere"></span>
+        <span class="black-sphere"></span>
+      </div>
+      <h1>CBG</h1>
+      <h3>Creative Studio</h3>
+    </div>
+  </body>
+</html>

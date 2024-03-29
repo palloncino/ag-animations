@@ -14,7 +14,7 @@ let endAnimation = false;
 let disabledPress = false;
 let timestampEndingAnimation;
 let durationEndingAnimation = 2000;
-let bgColor = '#F0EBE6';
+let bgColor = "#F0EBE6";
 
 if (window.innerWidth > 1440) {
   VIEWPORT = "monitor";
@@ -63,8 +63,24 @@ function setup() {
   let p5Canvas = createCanvas(windowWidth, windowHeight);
   p5Canvas.id("p5Canvas");
   spheres = [
-    { x: -300, y: 100, size: 80, currentSize: 80, targetSize: 80, color: "#F79B00", text: "" },
-    { x: 300, y: -100, size: 80, currentSize: 80, targetSize: 80, color: "#000", text: "" },
+    {
+      x: -300,
+      y: 100,
+      size: 80,
+      currentSize: 80,
+      targetSize: 80,
+      color: "#F79B00",
+      text: "",
+    },
+    {
+      x: 300,
+      y: -100,
+      size: 80,
+      currentSize: 80,
+      targetSize: 80,
+      color: "#000",
+      text: "",
+    },
     {
       x: 0,
       y: 0,
@@ -75,8 +91,26 @@ function setup() {
       text: "Art direction",
       id: "art_direction",
     },
-    { x: 0, y: 0, size: 80, currentSize: 80, targetSize: 80, color: "#F79B00", text: "Design", id: "design" },
-    { x: 0, y: 0, size: 80, currentSize: 80, targetSize: 80, color: "#F79B00", text: "Visual Art", id: "visual_art" },
+    {
+      x: 0,
+      y: 0,
+      size: 80,
+      currentSize: 80,
+      targetSize: 80,
+      color: "#F79B00",
+      text: "Design",
+      id: "design",
+    },
+    {
+      x: 0,
+      y: 0,
+      size: 80,
+      currentSize: 80,
+      targetSize: 80,
+      color: "#F79B00",
+      text: "Visual Art",
+      id: "visual_art",
+    },
     {
       x: 0,
       y: 0,
@@ -114,24 +148,13 @@ function setup() {
 function exitSceneAndRedirect(_sphere) {
   endAnimation = true;
   timestampEndingAnimation = millis();
-  let keeper;
 
-  // Reset the position of the first sphere and ensure it is visible
-  spheres[0].x = -400; // Set the x position to -200
-  spheres[0].y = -400; // Set the y position to -200
-  spheres[0].isExiting = false; // Ensure it is not marked as exiting
-  spheres[0].currentSize = 80; // Ensure it is not marked as exiting
-  spheres[0].color = '#000000';
-
-  // Now, handle the rest of the spheres for exiting or keeping
   spheres.slice(2, 8).forEach((sphere) => {
-    if (sphere.id !== _sphere.id) {
-      sphere.isExiting = true; // Mark the sphere as exiting
-    } else {
-      keeper = sphere; // Keep the selected sphere
-      keeper.isLastOrange = true;
-    }
+    sphere.isExiting = true; // Mark the sphere as exiting
   });
+
+  CbgTextHeading.style.visibility = "visible";
+  CbgTextHeading.style.opacity = 1;
 }
 
 function mousePressed() {
@@ -155,7 +178,12 @@ function mousePressed() {
       return;
     } else {
       for (let sphere of spheres.slice(2)) {
-        let distance = dist(mouseX - width / 2, mouseY - height / 2, sphere.x, sphere.y);
+        let distance = dist(
+          mouseX - width / 2,
+          mouseY - height / 2,
+          sphere.x,
+          sphere.y
+        );
         if (distance < sphere.size / 2) {
           exitSceneAndRedirect(sphere);
           return;
@@ -164,7 +192,6 @@ function mousePressed() {
     }
   }
 }
-
 
 function draw() {
   background(bgColor);
@@ -215,16 +242,16 @@ function draw() {
     let normalizedDistance = map(distance, 0, maxDistance, 1, 0);
 
     // Lerp background color based on normalized distance
-    bgColor = lerpColor(color('#F0EBE6'), color('#000000'), normalizedDistance);
+    bgColor = lerpColor(color("#F0EBE6"), color("#000000"), normalizedDistance);
 
     // Make sure the background is fully black when spheres overlap
     if (distance < 1) {
-      bgColor = '#000000';
+      bgColor = "#000000";
     }
   }
 
   if (phases[currentPhase] === "SCATTER") {
-    bgColor = lerpColor(color(bgColor), color('#F0EBE6'), 0.1);
+    bgColor = lerpColor(color(bgColor), color("#F0EBE6"), 0.1);
 
     if (!hoverLock && firstTimeScatter) {
       hoverLock = true;
@@ -319,36 +346,6 @@ function draw() {
 
     fill(sphere.color);
     ellipse(sphere.x, sphere.y, sphere.currentSize);
-
-    if (endAnimation) {
-      hoverLock = true;
-
-      let elapsedTime = millis() - timestampEndingAnimation;
-      let t = elapsedTime / durationEndingAnimation; // Calculate the normalized time elapsed
-
-      if (t >= 1) {
-        t = 1;
-        animating = false; // Stop the animation when the duration is reached or exceeded
-        CbgTextHeading.style.visibility = 'visible';
-        CbgTextHeading.style.opacity = 1;
-      }
-
-      let easedT = easeOutQuad(t);
-
-      spheres[0].x = lerp(-200, -10, easedT);
-      spheres[0].y = lerp(-200, endAnimationHeightMeasurement - 30, easedT);
-
-      if (sphere.isLastOrange) {
-        sphere.x = lerp(sphere.x, 20, t);
-        sphere.y = lerp(sphere.y, endAnimationHeightMeasurement, t);
-        sphere.currentSize = 80;
-      }
-
-      fill(spheres[0].color);
-      ellipse(spheres[0].x, spheres[0].y, spheres[0].currentSize);
-
-      disabledPress = true;
-    }
 
     // Displaying text on each sphere, if it has text
     if (sphere.text && !sphere.isExiting && !sphere.isLastOrange) {
