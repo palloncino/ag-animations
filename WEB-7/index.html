@@ -3,12 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./style.css" />
-    <link rel="stylesheet" href="./header.css" />
     <link rel="stylesheet" href="./animation.css" />
-    <link rel="stylesheet" href="./sections.css" />
     <title>Document</title>
   </head>
+  <style>
+    @font-face {
+      font-family: Custom;
+      src: url(./assets/fonts/AlbertSans.ttf);
+    }
+
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: "Albert Sans";
+    }
+  </style>
   <body>
     <div class="fake-header"></div>
 
@@ -18,7 +27,6 @@
         <span class="black-sphere"></span>
       </div>
       <h1>CBG</h1>
-      <!-- <h3>Creative Studio</h3> -->
     </div>
 
     <div class="content-container" id="art_direction">
@@ -62,13 +70,6 @@
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem
         necessitatibus earum accusantium.
       </p>
-    </div>
-
-    <div class="section section-full-height">
-      <div>Lorem ipsum</div>
-    </div>
-    <div class="section section-full-height">
-      <div>Lorem ipsum</div>
     </div>
 
     <script src="./p5.min.js"></script>
