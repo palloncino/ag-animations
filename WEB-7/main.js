@@ -26,36 +26,28 @@ if (window.innerWidth > 1440) {
 
 const phases = ["FLOATING", "ECLIPSE", "SCATTER", "REDIRECT"];
 
-const CbgTextHeading = document.getElementById("cbg_text_heading");
-const art_direction_container = document.getElementById("art_direction");
-const design_container = document.getElementById("design");
-const visual_art_container = document.getElementById("visual_art");
-const web_development_container = document.getElementById("web_development");
-const data_analysis_container = document.getElementById("data_analysis");
-const social_media_container = document.getElementById("social_media");
-
 function domContainerMapping(name) {
   switch (name) {
     case "art_direction":
-      return art_direction_container;
+      return document.getElementById("art_direction");
 
     case "design":
-      return design_container;
+      return document.getElementById("design");
 
     case "visual_art":
-      return visual_art_container;
+      return document.getElementById("visual_art");
 
     case "web_development":
-      return web_development_container;
+      return document.getElementById("web_development");
 
     case "data_analysis":
-      return data_analysis_container;
+      return document.getElementById("data_analysis");
 
     case "social_media":
-      return social_media_container;
+      return document.getElementById("social_media");
 
     default:
-      art_direction_container;
+      return document.getElementById("art_direction");
   }
 }
 
@@ -64,7 +56,7 @@ function setup() {
   p5Canvas.id("p5Canvas");
   spheres = [
     {
-      x: -300,
+      x: VIEWPORT === "mobile" ? -50 : -300,
       y: 100,
       size: 80,
       currentSize: 80,
@@ -73,7 +65,7 @@ function setup() {
       text: "",
     },
     {
-      x: 300,
+      x: VIEWPORT === "mobile" ? 50 : 300,
       y: -100,
       size: 80,
       currentSize: 80,
@@ -142,7 +134,17 @@ function setup() {
       id: "social_media",
     },
   ];
-  setTimeout(() => (currentPhase = (currentPhase + 1) % phases.length), 0);
+  generateCustomHtml();
+  createContentContainers();
+  injectStyles();
+  const overlay = document.getElementById("cbg-animations-overlay");
+  overlay.addEventListener("animationend", () => {
+    overlay.style.zIndex = "11800";
+  });
+  setTimeout(() => {
+    overlay.classList.add("fade-out-effect");
+    document.body.overflow = "hidden";
+  }, 2000);
 }
 
 function exitSceneAndRedirect(_sphere) {
@@ -150,19 +152,27 @@ function exitSceneAndRedirect(_sphere) {
   timestampEndingAnimation = millis();
 
   spheres.slice(2, 8).forEach((sphere) => {
-    sphere.isExiting = true; // Mark the sphere as exiting
+    if (_sphere.id === sphere.id) {
+      sphere.isOrbiting = true;
+      sphere.isExiting = true;
+    } else {
+      sphere.isExiting = true; // Mark the sphere as exiting
+    }
   });
 
+  const CbgTextHeading = document.getElementById("cbg_text_heading");
   CbgTextHeading.style.visibility = "visible";
   CbgTextHeading.style.opacity = 1;
+  document.body.style.overflowY = "hidden";
 }
 
 function mousePressed() {
   if (disabledPress) {
     return;
   }
-  // Ensure this logic only applies during the "ECLIPSE" phase
-  if (phases[currentPhase] === "ECLIPSE") {
+  if (phases[currentPhase] === "FLOATING") {
+    currentPhase = (currentPhase + 1) % phases.length;
+  } else if (phases[currentPhase] === "ECLIPSE") {
     if (hoverLock) {
       return;
     }
@@ -185,6 +195,7 @@ function mousePressed() {
           sphere.y
         );
         if (distance < sphere.size / 2) {
+          currentPhase = (currentPhase + 1) % phases.length;
           exitSceneAndRedirect(sphere);
           return;
         }
@@ -206,11 +217,18 @@ function draw() {
   if (phases[currentPhase] === "FLOATING") {
     visibleSpheres = spheres.slice(0, 2);
     const orbitCenter = [
-      { x: 150, y: -50 },
-      { x: -150, y: 50 },
+      { x: VIEWPORT === "mobile" ? -50 : -200, y: -50 },
+      { x: VIEWPORT === "mobile" ? 50 : 200, y: 50 },
     ];
-    applyOrbitalBehavior(visibleSpheres[1], orbitCenter[0], 30, 20, 100, true);
-    applyOrbitalBehavior(visibleSpheres[0], orbitCenter[1], 30, 20, 100, false);
+    applyOrbitalBehavior(visibleSpheres[1], orbitCenter[0], 0.01, 20, 20, true);
+    applyOrbitalBehavior(
+      visibleSpheres[0],
+      orbitCenter[1],
+      0.01,
+      20,
+      10,
+      false
+    );
   }
 
   if (phases[currentPhase] === "ECLIPSE") {
@@ -320,17 +338,22 @@ function draw() {
     spheres[7].y = lerp(spheres[7].y, currentTargets[5].y, 0.05);
   }
 
-  for (let sphere of visibleSpheres) {
-    if (sphere.isExiting) {
-      sphere.y = lerp(sphere.y, -1000, 0.05);
-    } else if (sphere.isOrbiting) {
-      const el = domContainerMapping(sphere.id);
-      if (el) {
-        el.style.visibility = "visible";
-        el.style.opacity = 1;
+  if (phases[currentPhase] === "REDIRECT") {
+    for (let sphere of visibleSpheres) {
+      if (sphere.isExiting) {
+        sphere.y = lerp(sphere.y, -1000, 0.05);
+      } else if (sphere.isOrbiting) {
+        const el = domContainerMapping(sphere.id);
+        if (el) {
+          el.style.visibility = "visible";
+          el.style.opacity = 1;
+        }
       }
     }
+    return;
+  }
 
+  for (let sphere of visibleSpheres) {
     let d = dist(mouseX - width / 2, mouseY - height / 2, sphere.x, sphere.y);
     let isHovering = d < sphere.size / 2;
     sphere.currentSize = lerp(sphere.currentSize, sphere.targetSize, 0.1);
@@ -441,6 +464,261 @@ function drawCurvedText(sphere) {
   }
 }
 
-function easeOutQuad(t) {
-  return 1 - (1 - t) * (1 - t);
+function generateCustomHtml() {
+  // Create the outermost div and set its id
+  cbgTextHeading = document.createElement("div");
+  cbgTextHeading.id = "cbg_text_heading";
+
+  // Create the relative-positioned div container
+  const relativeDiv = document.createElement("div");
+  relativeDiv.style.position = "relative";
+
+  // Create the first span with the class 'orange-sphere'
+  const orangeSphere = document.createElement("span");
+  orangeSphere.className = "orange-sphere";
+
+  // Create the second span with the class 'black-sphere'
+  const blackSphere = document.createElement("span");
+  blackSphere.className = "black-sphere";
+
+  // Append both spans to the relative-positioned div
+  relativeDiv.appendChild(orangeSphere);
+  relativeDiv.appendChild(blackSphere);
+
+  // Create the h1 element and set its text
+  const h1 = document.createElement("h1");
+  h1.textContent = "CBG";
+
+  // Append the relative-positioned div and h1 to the outermost div
+  cbgTextHeading.appendChild(relativeDiv);
+  cbgTextHeading.appendChild(h1);
+
+  // Finally, append the outermost div to the body or a specific container in the document
+  document.body.appendChild(cbgTextHeading);
+}
+
+function injectStyles() {
+  const styleElement = document.createElement("style");
+  styleElement.type = "text/css";
+  const styleRules = `
+      @font-face {
+        font-family: Custom;
+        src: url(./assets/fonts/AlbertSans.ttf);
+      }
+      
+      #p5Canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 12000;
+      }
+      
+      #cbg_text_heading {
+        display: flex;
+        flex-direction: column;
+        font-family: Custom;
+        position: absolute;
+        z-index: 12002;
+        top: 250px;
+        left: 50%;
+        transform: translateX(-50%);
+        transition: 2s;
+        width: 200px;
+        visibility: hidden;
+        opacity: 0;
+      }
+      
+      #cbg_text_heading .orange-sphere {
+        background: #f79b00;
+        height: 80px;
+        width: 80px;
+        border-radius: 100%;
+        position: absolute;
+        bottom: -80px;
+        left: 90px;
+      }
+      
+      #cbg_text_heading .black-sphere {
+        position: absolute;
+        background: #000;
+        height: 80px;
+        width: 80px;
+        border-radius: 100%;
+        left: 60px;
+        bottom: -50px;
+      }
+      
+      #cbg_text_heading h1 {
+        margin: 0;
+        font-weight: 400;
+        font-size: 1.2rem;
+        line-height: 1.4rem;
+      }
+      
+      #cbg_text_heading h3 {
+        margin: 0;
+      }
+      
+      /* HIDE SHOW CONTENT */
+      
+      #art_direction,
+      #design,
+      #visual_art,
+      #web_development,
+      #data_analysis,
+      #social_media {
+        visibility: hidden;
+        opacity: 0;
+      }
+      
+      .content-container {
+        font-family: Custom;
+        padding: 1rem;
+        position: fixed;
+        z-index: 12001;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        transition: 0.5s;
+        max-width: 600px;
+        text-align: center;
+        width: 100%;
+      }
+      
+      .content-container h1 {
+        margin: 0 0 1rem 0;
+        font-size: 4rem;
+      }
+      
+      .content-container p {
+        margin: 0;
+        font-size: 1.4rem;
+        line-height: 160%;
+      }
+      
+      /* MEDIA QUERIES */
+      
+      @media (max-width: 600px) {
+        #cbg_text_heading {
+          left: 50%;
+        }
+      
+        .content-container {
+          max-width: calc(100% - 2rem);
+          width: 100%;
+          margin: 0 auto;
+        }
+      
+        .content-container h1 {
+          font-size: 3rem;
+        }
+      }
+      
+      /* KEYFRAMES */
+      
+      @keyframes fadeOut {
+        0% {
+          opacity: 1;
+          visibility: visible;
+        }
+        100% {
+          opacity: 0;
+          visibility: hidden;
+        }
+      }
+      .fade-out-effect {
+        animation: fadeOut 2s forwards;
+      }  
+  `;
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = styleRules; // Support for IE
+  } else {
+    styleElement.appendChild(document.createTextNode(styleRules)); // Support for others
+  }
+
+  document.head.appendChild(styleElement);
+}
+
+function createContentContainers() {
+  // Define the content for each container
+  const contents = [
+    {
+      id: "art_direction",
+      title: "Art direction",
+      text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem necessitatibus earum accusantium.",
+    },
+    {
+      id: "design",
+      title: "Design",
+      text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem necessitatibus earum accusantium.",
+    },
+    {
+      id: "visual_art",
+      title: "Visual Art",
+      text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem necessitatibus earum accusantium.",
+    },
+    {
+      id: "web_development",
+      title: "Web development",
+      text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem necessitatibus earum accusantium.",
+    },
+    {
+      id: "data_analysis",
+      title: "Data analysis",
+      text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem necessitatibus earum accusantium.",
+    },
+    {
+      id: "social_media",
+      title: "Social media",
+      text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem necessitatibus earum accusantium.",
+    },
+  ];
+
+  contents.forEach((content) => {
+    // Create the container div
+    const containerDiv = document.createElement("div");
+    containerDiv.className = "content-container";
+    containerDiv.id = content.id;
+
+    // Create the h1 element for the title
+    const titleH1 = document.createElement("h1");
+    titleH1.textContent = content.title;
+
+    // Create the paragraph element for the text
+    const textP = document.createElement("p");
+    textP.textContent = content.text;
+
+    // Append the title and text to the container
+    containerDiv.appendChild(titleH1);
+    containerDiv.appendChild(textP);
+
+    // Append the container to the body or a specific parent element
+    document.body.appendChild(containerDiv);
+  });
+}
+
+function applyOrbitalBehavior(
+  sphere,
+  center,
+  angleIncrement,
+  radiusX,
+  radiusY,
+  clockwise
+) {
+  // Initialize an angle property on the sphere if it doesn't exist
+  if (sphere.angle === undefined) {
+    sphere.angle = 0;
+  }
+
+  // Calculate the next angle
+  if (clockwise) {
+    sphere.angle += angleIncrement;
+  } else {
+    sphere.angle -= angleIncrement;
+  }
+
+  // Update the sphere's position based on the orbit
+  sphere.x = center.x + radiusX * Math.cos(sphere.angle) * 2;
+  sphere.y = center.y + radiusY * Math.sin(sphere.angle) * 1;
 }
