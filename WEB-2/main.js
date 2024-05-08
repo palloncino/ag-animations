@@ -7,32 +7,27 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function customMobileEffectCBG() {
-  const heroHeader = document.getElementById('hero-header');
+  const heroHeader = document.getElementById("hero-header");
+  document.body.style.overflowY = "hidden";
 
   // Set initial state for the hero header
-  heroHeader.style.transform = 'scale(1)';
-  heroHeader.style.transition = 'transform 1s ease-out, opacity 0.5s ease-out'; // Smooth transition
-  heroHeader.style.opacity = '1';
+  heroHeader.style.transform = "scale(1)";
+  heroHeader.style.transition = "transform 1s ease-out";
 
   // Define the end state of the animation
   function triggerAnimation() {
-    heroHeader.style.transform = 'scale(0)';  // Scale down to zero
-    heroHeader.style.opacity = '1';  // Fade out the header
+    heroHeader.style.transform = "scale(0)";
 
-    // Allow scrolling after the animation is complete
     setTimeout(() => {
-      document.body.style.overflowY = 'auto'; // Enable vertical scrolling
+      document.body.style.overflowY = "auto"; // Enable vertical scrolling
     }, 1000); // This should match the longest duration in the CSS transitions
   }
 
   // Listen for any touch start event on the entire body
-  document.body.addEventListener('touchstart', function() {
+  document.body.addEventListener("touchstart", function() { 
     triggerAnimation();
-  }, { once: true }); // Ensure this only happens once
+  }, { once: true } );
 }
-
-
-
 
 function customDesktopEffectCBG() {
   const backgroundSky = document.querySelector(".background-sky");
