@@ -7,61 +7,31 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function customMobileEffectCBG() {
-  // Flag to track whether scrolling is allowed or not
-  let scrollingAllowed = false;
-  let counter = 0;
-  const maxCounter = 50;  // This value determines how many scroll events are required to completely hide the header
-  const heroHeader = document.getElementById("hero-header");
+  const heroHeader = document.getElementById('hero-header');
 
-  // Function to prevent scrolling
-  function preventScrolling() {
-    if (!scrollingAllowed) {
-      window.scrollTo(0, 0); // Scroll back to the top
-    }
+  // Set initial state for the hero header
+  heroHeader.style.transform = 'scale(1)';
+  heroHeader.style.transition = 'transform 1s ease-out, opacity 0.5s ease-out'; // Smooth transition
+  heroHeader.style.opacity = '1';
+
+  // Define the end state of the animation
+  function triggerAnimation() {
+    heroHeader.style.transform = 'scale(0)';  // Scale down to zero
+    heroHeader.style.opacity = '1';  // Fade out the header
+
+    // Allow scrolling after the animation is complete
+    setTimeout(() => {
+      document.body.style.overflowY = 'auto'; // Enable vertical scrolling
+    }, 1000); // This should match the longest duration in the CSS transitions
   }
 
-  // Prevent scrolling initially
-  preventScrolling();
-
-  // Update the --vh CSS variable when the window is resized
-  window.addEventListener("resize", function () {
-    document.documentElement.style.setProperty("--vh", `${window.innerHeight * 0.01}px`);
-  });
-
-  // Handle scroll event
-  window.addEventListener("scroll", function (e) {
-    // Prevent default scrolling behavior
-    e.preventDefault();
-
-    if (counter < maxCounter) {
-      counter += 1;
-      updateHeroHeader(counter, maxCounter);
-      preventScrolling();  // Keep preventing the natural scroll until fully hidden
-    } else {
-      scrollingAllowed = true;  // Allow natural scrolling after the header is fully hidden
-      document.body.style.overflowY = "auto";  // Enable scrolling
-    }
-
-    console.log(counter);
-  });
-
-  function updateHeroHeader(counter, maxCounter) {
-    let progress = counter / maxCounter;
-
-    // Scale calculation
-    let scale;
-    if (progress <= 0.5) {
-      scale = 1 + progress * 0.4;  // Scale up from 1 to 1.2
-    } else {
-      scale = 1.2 - (progress - 0.5) * 1.4;  // Then scale down from 1.2 to 0.5
-    }
-    heroHeader.style.transform = `scale(${scale})`;
-
-    // Clip path adjustment for visual shrink effect
-    const clipPercent = 50 * progress;
-    heroHeader.style.clipPath = `polygon(${clipPercent}% ${clipPercent}%, ${100 - clipPercent}% ${clipPercent}%, ${100 - clipPercent}% ${100 - clipPercent}%, ${clipPercent}% ${100 - clipPercent}%)`;
-  }
+  // Listen for any touch start event on the entire body
+  document.body.addEventListener('touchstart', function() {
+    triggerAnimation();
+  }, { once: true }); // Ensure this only happens once
 }
+
+
 
 
 function customDesktopEffectCBG() {
